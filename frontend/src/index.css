@@ -1,0 +1,211 @@
+/* 全局样式 */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* 自定义样式 */
+.ant-layout {
+  min-height: 100vh;
+}
+
+.ant-layout-header {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.ant-layout-content {
+  padding: 24px;
+  background: #f5f5f5;
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.page-header {
+  padding: 24px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.page-content {
+  padding: 24px;
+}
+
+.search-container {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-card {
+  margin-bottom: 16px;
+  transition: all 0.3s;
+}
+
+.item-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.item-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.upload-dragger {
+  background: #fafafa;
+  border: 2px dashed #d9d9d9;
+  border-radius: 6px;
+  padding: 24px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.upload-dragger:hover {
+  border-color: #1890ff;
+}
+
+.upload-dragger.ant-upload-drag-hover {
+  border-color: #1890ff;
+  background: #f0f8ff;
+}
+
+.ocr-result {
+  background: #f6ffed;
+  border: 1px solid #b7eb8f;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.ai-classification {
+  background: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.stats-card {
+  text-align: center;
+  padding: 24px;
+}
+
+.stats-number {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1890ff;
+  margin-bottom: 8px;
+}
+
+.stats-label {
+  color: #666;
+  font-size: 14px;
+}
+
+.category-tag {
+  margin: 4px;
+}
+
+.location-tag {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.status-tag {
+  font-weight: bold;
+}
+
+.lost-status {
+  background: #fff2e8;
+  color: #d46b08;
+  border-color: #ffd591;
+}
+
+.found-status {
+  background: #f6ffed;
+  color: #52c41a;
+  border-color: #b7eb8f;
+}
+
+.claimed-status {
+  background: #f0f0f0;
+  color: #666;
+  border-color: #d9d9d9;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .ant-layout-content {
+    padding: 16px;
+  }
+  
+  .page-content {
+    padding: 16px;
+  }
+  
+  .search-container {
+    padding: 16px;
+  }
+  
+  .item-image {
+    height: 150px;
+  }
+}
+
+/* 加载动画 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* 空状态 */
+.empty-container {
+  text-align: center;
+  padding: 48px 24px;
+  color: #999;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: #d9d9d9;
+}
+
+/* 错误状态 */
+.error-container {
+  text-align: center;
+  padding: 48px 24px;
+  color: #ff4d4f;
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
