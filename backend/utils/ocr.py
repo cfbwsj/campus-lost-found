@@ -53,6 +53,10 @@ class OCRProcessor:
             (识别的文字, 置信度)
         """
         try:
+            # 检查是否安装了pytesseract和opencv
+            import pytesseract
+            import cv2
+            
             # 预处理图像
             processed_image = self.preprocess_image(image_path)
             
@@ -78,8 +82,11 @@ class OCRProcessor:
             
             return cleaned_text, avg_confidence
             
+        except ImportError:
+            logger.warning("OCR功能未启用（tesseract未安装）")
+            return "OCR功能暂未启用", 0.0
         except Exception as e:
-            logger.error(f"OCR识别失败: {str(e)}")
+            logger.warning(f"OCR识别失败: {str(e)}")
             return "", 0.0
     
     def _clean_text(self, text: str) -> str:

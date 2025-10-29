@@ -32,6 +32,12 @@ class ElasticSearchClient:
     def _init_client(self):
         """初始化ElasticSearch客户端"""
         try:
+            # 检查是否配置了ES环境变量
+            if self.es_host == "localhost":
+                logger.warning("ElasticSearch未配置，使用基础搜索功能")
+                self.client = None
+                return
+                
             self.client = Elasticsearch([self.es_url])
             
             # 测试连接
@@ -43,7 +49,7 @@ class ElasticSearchClient:
                 self.client = None
                 
         except Exception as e:
-            logger.error(f"ElasticSearch初始化失败: {str(e)}")
+            logger.warning(f"ElasticSearch未启用: {str(e)}")
             self.client = None
     
     def _create_indices(self):

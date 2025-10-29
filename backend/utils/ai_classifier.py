@@ -35,6 +35,10 @@ class ItemClassifier:
     def _load_model(self):
         """加载预训练模型"""
         try:
+            # 检查是否安装了torch
+            import torch
+            import torchvision.transforms as transforms
+            
             # 使用ResNet作为基础模型
             self.model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
             self.model.eval()
@@ -50,8 +54,11 @@ class ItemClassifier:
             
             logger.info("AI分类模型加载成功")
             
+        except ImportError:
+            logger.warning("AI功能未启用（torch未安装），使用基础分类")
+            self.model = None
         except Exception as e:
-            logger.error(f"模型加载失败: {str(e)}")
+            logger.warning(f"AI模型未加载: {str(e)}")
             self.model = None
     
     def classify_image(self, image_path: str) -> Tuple[str, float, List[str]]:

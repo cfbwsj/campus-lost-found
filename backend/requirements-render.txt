@@ -1,0 +1,23 @@
+# Render部署专用 - 轻量级配置
+
+# Web框架
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# 数据库
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+alembic==1.12.1
+
+# 工具库
+pydantic==2.5.0
+python-dotenv==1.0.0
+requests==2.31.0
+
+# 基础图像处理（不包含OCR和AI）
+Pillow==10.1.0
+
+# 开发工具
+pytest==7.4.3
+

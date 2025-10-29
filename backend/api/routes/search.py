@@ -37,31 +37,61 @@ async def search_items(
         all_results = []
         total_count = 0
         
-        # 搜索失物
-        if item_type in ["lost", "all"]:
-            lost_results = es_client.search_lost_items(
-                query=q,
-                filters=filters,
-                size=limit,
-                from_=offset
+        # 如果ES不可用，使用SQL搜索
+        if not es_client.client:
+            # 使用数据库直接搜索作为降级方案
+            query = db.query(DBLostItem if item_type == "lost" else DBFoundItem if item_type == "found" else DBLostItem)
+            query = query.filter(
+                (DBLostItem.title.contains(q)) | 
+                (DBLostItem.description.contains(q))
             )
-            for item in lost_results["hits"]:
-                item["item_type"] = "lost"
-                all_results.append(item)
-            total_count += lost_results["total"]
-        
-        # 搜索招领
-        if item_type in ["found", "all"]:
-            found_results = es_client.search_found_items(
-                query=q,
-                filters=filters,
-                size=limit,
-                from_=offset
-            )
-            for item in found_results["hits"]:
-                item["item_type"] = "found"
-                all_results.append(item)
-            total_count += found_results["total"]
+            if category:
+                query = query.filter(DBLostItem.category == category)
+            if location:
+                query = query.filter(DBLostItem.location.contains(location))
+            
+            total_count = query.count()
+            results = query.offset(offset).limit(limit).all()
+            
+            for item in results:
+                item_dict = {
+                    "id": item.id,
+                    "title": item.title,
+                    "description": item.description,
+                    "category": item.category,
+                    "location": item.location,
+                    "image_url": item.image_url,
+                    "status": item.status,
+                    "created_at": item.created_at.isoformat() if item.created_at else "",
+                    "item_type": item_type
+                }
+                all_results.append(item_dict)
+        else:
+            # 搜索失物
+            if item_type in ["lost", "all"]:
+                lost_results = es_client.search_lost_items(
+                    query=q,
+                    filters=filters,
+                    size=limit,
+                    from_=offset
+                )
+                for item in lost_results["hits"]:
+                    item["item_type"] = "lost"
+                    all_results.append(item)
+                total_count += lost_results["total"]
+            
+            # 搜索招领
+            if item_type in ["found", "all"]:
+                found_results = es_client.search_found_items(
+                    query=q,
+                    filters=filters,
+                    size=limit,
+                    from_=offset
+                )
+                for item in found_results["hits"]:
+                    item["item_type"] = "found"
+                    all_results.append(item)
+                total_count += found_results["total"]
         
         # 按时间排序
         all_results.sort(key=lambda x: x.get("created_at", ""), reverse=True)
