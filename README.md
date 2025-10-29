@@ -1,150 +1,151 @@
-# Ğ£Ô°Ê§ÎïÕĞÁìÏµÍ³
+# æ ¡å›­å¤±ç‰©æ‹›é¢†ç³»ç»Ÿ
 
-Ò»¸ö»ùÓÚAI¼¼ÊõµÄÖÇÄÜĞ£Ô°Ê§ÎïÕĞÁìÆ½Ì¨£¬Ö§³ÖÕÕÆ¬ÉÏ´«¡¢OCRÎÄ×ÖÊ¶±ğ¡¢ÖÇÄÜÎïÆ··ÖÀàºÍÄ£ºıËÑË÷¹¦ÄÜ¡£
+ä¸€ä¸ªåŸºäºAIæŠ€æœ¯çš„æ™ºèƒ½æ ¡å›­å¤±ç‰©æ‹›é¢†å¹³å°ï¼Œæ”¯æŒç…§ç‰‡ä¸Šä¼ ã€OCRæ–‡å­—è¯†åˆ«ã€æ™ºèƒ½ç‰©å“åˆ†ç±»å’Œæ¨¡ç³Šæœç´¢åŠŸèƒ½ã€‚
 
-## ¹¦ÄÜÌØĞÔ
+## åŠŸèƒ½ç‰¹æ€§
 
-### ? ÖÇÄÜÊ¶±ğ
-- **OCRÎÄ×ÖÊ¶±ğ**£ºÊ¹ÓÃTesseract×Ô¶¯Ê¶±ğÉÏ´«ÕÕÆ¬ÖĞµÄÎÄ×ÖĞÅÏ¢
-- **AIÎïÆ··ÖÀà**£ºÖÇÄÜÊ¶±ğÊ§ÎïÀà±ğ£¨ÊÖ»ú¡¢Ç®°ü¡¢Ô¿³×¡¢Êé¼®µÈ£©
-- **¶àÓïÑÔÖ§³Ö**£ºÖ§³ÖÖĞÓ¢ÎÄÎÄ×ÖÊ¶±ğ
+### ? æ™ºèƒ½è¯†åˆ«
+- **OCRæ–‡å­—è¯†åˆ«**ï¼šä½¿ç”¨Tesseractè‡ªåŠ¨è¯†åˆ«ä¸Šä¼ ç…§ç‰‡ä¸­çš„æ–‡å­—ä¿¡æ¯
+- **AIç‰©å“åˆ†ç±»**ï¼šæ™ºèƒ½è¯†åˆ«å¤±ç‰©ç±»åˆ«ï¼ˆæ‰‹æœºã€é’±åŒ…ã€é’¥åŒ™ã€ä¹¦ç±ç­‰ï¼‰
+- **å¤šè¯­è¨€æ”¯æŒ**ï¼šæ”¯æŒä¸­è‹±æ–‡æ–‡å­—è¯†åˆ«
 
-### ? ÖÇÄÜËÑË÷
-- **Ä£ºıÆ¥Åä**£º»ùÓÚElasticSearchµÄ¹Ø¼ü×ÖÄ£ºıËÑË÷
-- **ÓïÒåËÑË÷**£ºÖ§³Ö×ÔÈ»ÓïÑÔ²éÑ¯
-- **·ÖÀàÉ¸Ñ¡**£º°´ÎïÆ·Àà±ğ¿ìËÙÉ¸Ñ¡
+### ? æ™ºèƒ½æœç´¢
+- **æ¨¡ç³ŠåŒ¹é…**ï¼šåŸºäºElasticSearchçš„å…³é”®å­—æ¨¡ç³Šæœç´¢
+- **è¯­ä¹‰æœç´¢**ï¼šæ”¯æŒè‡ªç„¶è¯­è¨€æŸ¥è¯¢
+- **åˆ†ç±»ç­›é€‰**ï¼šæŒ‰ç‰©å“ç±»åˆ«å¿«é€Ÿç­›é€‰
 
-### ? ÓÃ»§ÓÑºÃ
-- **ÏìÓ¦Ê½Éè¼Æ**£ºÖ§³ÖÊÖ»ú¡¢Æ½°å¡¢µçÄÔ¶à¶Ë·ÃÎÊ
-- **Í¼Æ¬ÉÏ´«**£ºÍÏ×§ÉÏ´«£¬Ö§³Ö¶àÖÖÍ¼Æ¬¸ñÊ½
-- **ÊµÊ±¸üĞÂ**£ºÊ§ÎïĞÅÏ¢ÊµÊ±Í¬²½
+### ? ç”¨æˆ·å‹å¥½
+- **å“åº”å¼è®¾è®¡**ï¼šæ”¯æŒæ‰‹æœºã€å¹³æ¿ã€ç”µè„‘å¤šç«¯è®¿é—®
+- **å›¾ç‰‡ä¸Šä¼ **ï¼šæ‹–æ‹½ä¸Šä¼ ï¼Œæ”¯æŒå¤šç§å›¾ç‰‡æ ¼å¼
+- **å®æ—¶æ›´æ–°**ï¼šå¤±ç‰©ä¿¡æ¯å®æ—¶åŒæ­¥
 
-## ¼¼ÊõÕ»
+## æŠ€æœ¯æ ˆ
 
-### ºó¶Ë
+### åç«¯
 - **Python 3.8+**
-- **FastAPI**£º¸ßĞÔÄÜWeb¿ò¼Ü
-- **Tesseract OCR**£ºÎÄ×ÖÊ¶±ğÒıÇæ
-- **ElasticSearch**£ºËÑË÷ÒıÇæ
-- **OpenCV**£ºÍ¼Ïñ´¦Àí
-- **TensorFlow/PyTorch**£ºAIÄ£ĞÍ
+- **FastAPI**ï¼šé«˜æ€§èƒ½Webæ¡†æ¶
+- **Tesseract OCR**ï¼šæ–‡å­—è¯†åˆ«å¼•æ“
+- **ElasticSearch**ï¼šæœç´¢å¼•æ“
+- **OpenCV**ï¼šå›¾åƒå¤„ç†
+- **TensorFlow/PyTorch**ï¼šAIæ¨¡å‹
 
-### Ç°¶Ë
-- **React 18**£ºÓÃ»§½çÃæ¿ò¼Ü
-- **Ant Design**£ºUI×é¼ş¿â
-- **Axios**£ºHTTP¿Í»§¶Ë
-- **React Router**£ºÂ·ÓÉ¹ÜÀí
+### å‰ç«¯
+- **React 18**ï¼šç”¨æˆ·ç•Œé¢æ¡†æ¶
+- **Ant Design**ï¼šUIç»„ä»¶åº“
+- **Axios**ï¼šHTTPå®¢æˆ·ç«¯
+- **React Router**ï¼šè·¯ç”±ç®¡ç†
 
-### Êı¾İ¿â
-- **PostgreSQL**£ºÖ÷Êı¾İ¿â
-- **ElasticSearch**£ºËÑË÷ÒıÇæ
-- **Redis**£º»º´æ
+### æ•°æ®åº“
+- **PostgreSQL**ï¼šä¸»æ•°æ®åº“
+- **ElasticSearch**ï¼šæœç´¢å¼•æ“
+- **Redis**ï¼šç¼“å­˜
 
-## ÏîÄ¿½á¹¹
+## é¡¹ç›®ç»“æ„
 
 ```
 campus-lost-found/
-©À©¤©¤ backend/                 # ºó¶Ë´úÂë
-©¦   ©À©¤©¤ api/                # API½Ó¿Ú
-©¦   ©À©¤©¤ models/             # Êı¾İÄ£ĞÍ
-©¦   ©À©¤©¤ utils/              # ¹¤¾ßº¯Êı
-©¦   ©À©¤©¤ uploads/            # ÉÏ´«ÎÄ¼şÄ¿Â¼
-©¦   ©¸©¤©¤ requirements.txt    # PythonÒÀÀµ
-©À©¤©¤ frontend/               # Ç°¶Ë´úÂë
-©¦   ©À©¤©¤ src/                # Ô´´úÂë
-©¦   ©À©¤©¤ public/             # ¾²Ì¬×ÊÔ´
-©¦   ©¸©¤©¤ package.json        # Node.jsÒÀÀµ
-©À©¤©¤ docs/                   # ÎÄµµ
-©¸©¤©¤ README.md              # ÏîÄ¿ËµÃ÷
+â”œâ”€â”€ backend/                 # åç«¯ä»£ç 
+â”‚   â”œâ”€â”€ api/                # APIæ¥å£
+â”‚   â”œâ”€â”€ models/             # æ•°æ®æ¨¡å‹
+â”‚   â”œâ”€â”€ utils/              # å·¥å…·å‡½æ•°
+â”‚   â”œâ”€â”€ uploads/            # ä¸Šä¼ æ–‡ä»¶ç›®å½•
+â”‚   â””â”€â”€ requirements.txt    # Pythonä¾èµ–
+â”œâ”€â”€ frontend/               # å‰ç«¯ä»£ç 
+â”‚   â”œâ”€â”€ src/                # æºä»£ç 
+â”‚   â”œâ”€â”€ public/             # é™æ€èµ„æº
+â”‚   â””â”€â”€ package.json        # Node.jsä¾èµ–
+â”œâ”€â”€ docs/                   # æ–‡æ¡£
+â””â”€â”€ README.md              # é¡¹ç›®è¯´æ˜
 ```
 
-## ¿ìËÙ¿ªÊ¼
+## å¿«é€Ÿå¼€å§‹
 
-### »·¾³ÒªÇó
+### ç¯å¢ƒè¦æ±‚
 - Python 3.8+
 - Node.js 16+
 - ElasticSearch 7.x
 - PostgreSQL 12+
 - Tesseract OCR
 
-### °²×°²½Öè
+### å®‰è£…æ­¥éª¤
 
-1. **¿ËÂ¡ÏîÄ¿**
+1. **å…‹éš†é¡¹ç›®**
 ```bash
 git clone https://github.com/your-username/campus-lost-found.git
 cd campus-lost-found
 ```
 
-2. **ºó¶ËÉèÖÃ**
+2. **åç«¯è®¾ç½®**
 ```bash
 cd backend
 pip install -r requirements.txt
 python main.py
 ```
 
-3. **Ç°¶ËÉèÖÃ**
+3. **å‰ç«¯è®¾ç½®**
 ```bash
 cd frontend
 npm install
 npm start
 ```
 
-4. **Æô¶¯·şÎñ**
-- ºó¶ËAPI£ºhttp://localhost:8000
-- Ç°¶Ë½çÃæ£ºhttp://localhost:3000
-- APIÎÄµµ£ºhttp://localhost:8000/docs
+4. **å¯åŠ¨æœåŠ¡**
+- åç«¯APIï¼šhttp://localhost:8000
+- å‰ç«¯ç•Œé¢ï¼šhttp://localhost:3000
+- APIæ–‡æ¡£ï¼šhttp://localhost:8000/docs
 
-## APIÎÄµµ
+## APIæ–‡æ¡£
 
-### Ê§Îï¹ÜÀí
-- `POST /api/items` - ·¢²¼Ê§ÎïĞÅÏ¢
-- `GET /api/items` - »ñÈ¡Ê§ÎïÁĞ±í
-- `GET /api/items/{id}` - »ñÈ¡Ê§ÎïÏêÇé
-- `PUT /api/items/{id}` - ¸üĞÂÊ§ÎïĞÅÏ¢
-- `DELETE /api/items/{id}` - É¾³ıÊ§ÎïĞÅÏ¢
+### å¤±ç‰©ç®¡ç†
+- `POST /api/items` - å‘å¸ƒå¤±ç‰©ä¿¡æ¯
+- `GET /api/items` - è·å–å¤±ç‰©åˆ—è¡¨
+- `GET /api/items/{id}` - è·å–å¤±ç‰©è¯¦æƒ…
+- `PUT /api/items/{id}` - æ›´æ–°å¤±ç‰©ä¿¡æ¯
+- `DELETE /api/items/{id}` - åˆ é™¤å¤±ç‰©ä¿¡æ¯
 
-### ËÑË÷¹¦ÄÜ
-- `GET /api/search` - ¹Ø¼ü×ÖËÑË÷
-- `GET /api/search/image` - Í¼Æ¬ÏàËÆËÑË÷
-- `GET /api/categories` - »ñÈ¡ÎïÆ··ÖÀà
+### æœç´¢åŠŸèƒ½
+- `GET /api/search` - å…³é”®å­—æœç´¢
+- `GET /api/search/image` - å›¾ç‰‡ç›¸ä¼¼æœç´¢
+- `GET /api/categories` - è·å–ç‰©å“åˆ†ç±»
 
-### Í¼Æ¬´¦Àí
-- `POST /api/upload` - ÉÏ´«Í¼Æ¬
-- `POST /api/ocr` - OCRÎÄ×ÖÊ¶±ğ
-- `POST /api/classify` - AIÎïÆ··ÖÀà
+### å›¾ç‰‡å¤„ç†
+- `POST /api/upload` - ä¸Šä¼ å›¾ç‰‡
+- `POST /api/ocr` - OCRæ–‡å­—è¯†åˆ«
+- `POST /api/classify` - AIç‰©å“åˆ†ç±»
 
-## ²¿ÊğÖ¸ÄÏ
+## éƒ¨ç½²æŒ‡å—
 
-### Docker²¿Êğ
+### Dockeréƒ¨ç½²
 ```bash
 docker-compose up -d
 ```
 
-### Éú²ú»·¾³²¿Êğ
-Ïê¼û [²¿ÊğÎÄµµ](docs/deployment/)
+### ç”Ÿäº§ç¯å¢ƒéƒ¨ç½²
+è¯¦è§ [éƒ¨ç½²æ–‡æ¡£](docs/deployment/)
 
-## ¹±Ï×Ö¸ÄÏ
+## è´¡çŒ®æŒ‡å—
 
-1. Fork ±¾²Ö¿â
-2. ´´½¨ÌØĞÔ·ÖÖ§ (`git checkout -b feature/AmazingFeature`)
-3. Ìá½»¸ü¸Ä (`git commit -m 'Add some AmazingFeature'`)
-4. ÍÆËÍµ½·ÖÖ§ (`git push origin feature/AmazingFeature`)
-5. ´ò¿ª Pull Request
+1. Fork æœ¬ä»“åº“
+2. åˆ›å»ºç‰¹æ€§åˆ†æ”¯ (`git checkout -b feature/AmazingFeature`)
+3. æäº¤æ›´æ”¹ (`git commit -m 'Add some AmazingFeature'`)
+4. æ¨é€åˆ°åˆ†æ”¯ (`git push origin feature/AmazingFeature`)
+5. æ‰“å¼€ Pull Request
 
-## Ğí¿ÉÖ¤
+## è®¸å¯è¯
 
-±¾ÏîÄ¿²ÉÓÃ MIT Ğí¿ÉÖ¤ - ²é¿´ [LICENSE](LICENSE) ÎÄ¼şÁË½âÏêÇé¡£
+æœ¬é¡¹ç›®é‡‡ç”¨ MIT è®¸å¯è¯ - æŸ¥çœ‹ [LICENSE](LICENSE) æ–‡ä»¶äº†è§£è¯¦æƒ…ã€‚
 
-## ÁªÏµ·½Ê½
+## è”ç³»æ–¹å¼
 
-- ÏîÄ¿Î¬»¤Õß£º[Your Name]
-- ÓÊÏä£ºyour.email@example.com
-- ÏîÄ¿Á´½Ó£ºhttps://github.com/your-username/campus-lost-found
+- é¡¹ç›®ç»´æŠ¤è€…ï¼š[cfbwsj]
+- é‚®ç®±ï¼š2514912874@qq.com
+- é¡¹ç›®é“¾æ¥ï¼šhttps://github.com/your-username/campus-lost-found
 
-## ÖÂĞ»
+## è‡´è°¢
 
 - [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
 - [ElasticSearch](https://www.elastic.co/)
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [React](https://reactjs.org/)
 - [Ant Design](https://ant.design/)
+
