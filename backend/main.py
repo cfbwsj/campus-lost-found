@@ -17,14 +17,22 @@ from models.database import init_db
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifecycle management"""
-    # Execute on startup
-    init_db()
-    # Create upload directories
+    # Create upload directories first
     os.makedirs("uploads", exist_ok=True)
     os.makedirs("uploads/images", exist_ok=True)
+    os.makedirs("uploads/ocr", exist_ok=True)
+    os.makedirs("uploads/classify", exist_ok=True)
+    # Execute on startup
+    init_db()
     yield
     # Execute on shutdown
 
+
+# Ensure upload directories exist before app initialization
+os.makedirs("uploads", exist_ok=True)
+os.makedirs("uploads/images", exist_ok=True)
+os.makedirs("uploads/ocr", exist_ok=True)
+os.makedirs("uploads/classify", exist_ok=True)
 
 # Create FastAPI application
 app = FastAPI(
