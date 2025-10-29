@@ -42,7 +42,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Configure CORS - 允许所有来源（生产环境应该指定具体域名）
+# Configure CORS - 允许所有来源
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # 允许所有域名访问
