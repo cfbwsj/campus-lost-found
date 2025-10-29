@@ -43,11 +43,11 @@ const Home = () => {
 
   const loadHomeData = async () => {
     try {
-      // ¼ÓÔØÈÈÃÅ¹Ø¼ü´Ê
+      // åŠ è½½çƒ­é—¨å…³é”®è¯
       const keywordsRes = await searchAPI.getHotKeywords();
       setHotKeywords(keywordsRes.keywords || []);
 
-      // ¼ÓÔØ×î½ü·¢²¼µÄÎïÆ·
+      // åŠ è½½æœ€è¿‘å‘å¸ƒçš„ç‰©å“
       const [lostRes, foundRes] = await Promise.all([
         lostItemsAPI.getLostItems({ limit: 5 }),
         foundItemsAPI.getFoundItems({ limit: 5 })
@@ -62,7 +62,7 @@ const Home = () => {
 
       setRecentItems(allRecent);
 
-      // Ä£ÄâÍ³¼ÆÊý¾Ý
+      // æ¨¡æ‹Ÿç»Ÿè®¡æ•°æ®
       setStats({
         lostCount: 156,
         foundCount: 89,
@@ -70,8 +70,8 @@ const Home = () => {
       });
 
     } catch (error) {
-      console.error('¼ÓÔØÊ×Ò³Êý¾ÝÊ§°Ü:', error);
-      message.error('¼ÓÔØÊý¾ÝÊ§°Ü');
+      console.error('åŠ è½½é¦–é¡µæ•°æ®å¤±è´¥:', error);
+      message.error('åŠ è½½æ•°æ®å¤±è´¥');
     }
   };
 
@@ -91,9 +91,9 @@ const Home = () => {
 
   const getStatusTag = (status, type) => {
     const statusMap = {
-      lost: { color: 'orange', text: '¶ªÊ§' },
-      found: { color: 'green', text: 'ÕÐÁì' },
-      claimed: { color: 'default', text: 'ÒÑÈÏÁì' }
+      lost: { color: 'orange', text: 'ä¸¢å¤±' },
+      found: { color: 'green', text: 'æ‹›é¢†' },
+      claimed: { color: 'default', text: 'å·²è®¤é¢†' }
     };
     
     const statusInfo = statusMap[status] || statusMap[type];
@@ -102,22 +102,22 @@ const Home = () => {
 
   return (
     <div className="page-container">
-      {/* »¶Ó­ÇøÓò */}
+      {/* æ¬¢è¿ŽåŒºåŸŸ */}
       <div className="page-header">
         <Row justify="center" align="middle">
           <Col xs={24} md={16} lg={12}>
             <div style={{ textAlign: 'center' }}>
               <Title level={1} style={{ marginBottom: 16 }}>
-                ? Ð£Ô°Ê§ÎïÕÐÁìÏµÍ³
+                 æ ¡å›­å¤±ç‰©æ‹›é¢†ç³»ç»Ÿ
               </Title>
               <Paragraph style={{ fontSize: '16px', color: '#666', marginBottom: 32 }}>
-                »ùÓÚAI¼¼ÊõµÄÖÇÄÜÊ§ÎïÕÐÁìÆ½Ì¨£¬Ö§³ÖOCRÊ¶±ð¡¢ÖÇÄÜ·ÖÀàºÍÄ£ºýËÑË÷
+                åŸºäºŽAIæŠ€æœ¯çš„æ™ºèƒ½å¤±ç‰©æ‹›é¢†å¹³å°ï¼Œæ”¯æŒOCRè¯†åˆ«ã€æ™ºèƒ½åˆ†ç±»å’Œæ¨¡ç³Šæœç´¢
               </Paragraph>
               
               <Search
-                placeholder="ËÑË÷Ê§Îï»òÕÐÁìÐÅÏ¢..."
+                placeholder="æœç´¢å¤±ç‰©æˆ–æ‹›é¢†ä¿¡æ¯..."
                 allowClear
-                enterButton={<Button type="primary" icon={<SearchOutlined />}>ËÑË÷</Button>}
+                enterButton={<Button type="primary" icon={<SearchOutlined />}>æœç´¢</Button>}
                 size="large"
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
@@ -130,12 +130,12 @@ const Home = () => {
       </div>
 
       <div className="page-content">
-        {/* Í³¼ÆÐÅÏ¢ */}
+        {/* ç»Ÿè®¡ä¿¡æ¯ */}
         <Row gutter={[16, 16]} style={{ marginBottom: 32 }}>
           <Col xs={24} sm={8}>
             <Card>
               <Statistic
-                title="Ê§Îï×ÜÊý"
+                title="å¤±ç‰©æ€»æ•°"
                 value={stats.lostCount}
                 prefix={<FileSearchOutlined style={{ color: '#ff4d4f' }} />}
                 valueStyle={{ color: '#ff4d4f' }}
@@ -145,7 +145,7 @@ const Home = () => {
           <Col xs={24} sm={8}>
             <Card>
               <Statistic
-                title="ÕÐÁì×ÜÊý"
+                title="æ‹›é¢†æ€»æ•°"
                 value={stats.foundCount}
                 prefix={<BulbOutlined style={{ color: '#52c41a' }} />}
                 valueStyle={{ color: '#52c41a' }}
@@ -155,7 +155,7 @@ const Home = () => {
           <Col xs={24} sm={8}>
             <Card>
               <Statistic
-                title="×Ü¼Æ"
+                title="æ€»è®¡"
                 value={stats.totalCount}
                 prefix={<PlusOutlined style={{ color: '#1890ff' }} />}
                 valueStyle={{ color: '#1890ff' }}
@@ -164,8 +164,8 @@ const Home = () => {
           </Col>
         </Row>
 
-        {/* ÈÈÃÅ¹Ø¼ü´Ê */}
-        <Card title="ÈÈÃÅËÑË÷" style={{ marginBottom: 24 }}>
+        {/* çƒ­é—¨å…³é”®è¯ */}
+        <Card title="çƒ­é—¨æœç´¢" style={{ marginBottom: 24 }}>
           <Space wrap>
             {hotKeywords.map((keyword, index) => (
               <Tag
@@ -179,10 +179,10 @@ const Home = () => {
           </Space>
         </Card>
 
-        {/* ×î½ü·¢²¼ */}
-        <Card title="×î½ü·¢²¼" extra={
+        {/* æœ€è¿‘å‘å¸ƒ */}
+        <Card title="æœ€è¿‘å‘å¸ƒ" extra={
           <Button type="link" onClick={() => navigate('/upload')}>
-            ·¢²¼ÐÅÏ¢
+            å‘å¸ƒä¿¡æ¯
           </Button>
         }>
           <List
@@ -212,7 +212,7 @@ const Home = () => {
                     <Space direction="vertical" size={4}>
                       <div>{item.description}</div>
                       <Space size="small">
-                        <Tag>{item.category || 'Î´·ÖÀà'}</Tag>
+                        <Tag>{item.category || 'æœªåˆ†ç±»'}</Tag>
                         <Tag icon={<ClockCircleOutlined />}>
                           {new Date(item.created_at).toLocaleDateString()}
                         </Tag>

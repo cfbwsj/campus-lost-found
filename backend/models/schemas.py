@@ -1,5 +1,5 @@
 """
-PydanticÊı¾İÄ£ĞÍ
+Pydanticæ•°æ®æ¨¡å‹
 """
 
 from pydantic import BaseModel, HttpUrl
@@ -8,7 +8,7 @@ from typing import Optional, List
 
 
 class ItemBase(BaseModel):
-    """Ê§Îï»ù´¡Ä£ĞÍ"""
+    """å¤±ç‰©åŸºç¡€æ¨¡å‹"""
     title: str
     description: Optional[str] = None
     category: Optional[str] = None
@@ -17,12 +17,12 @@ class ItemBase(BaseModel):
 
 
 class ItemCreate(ItemBase):
-    """´´½¨Ê§ÎïÄ£ĞÍ"""
+    """åˆ›å»ºå¤±ç‰©æ¨¡å‹"""
     pass
 
 
 class ItemUpdate(BaseModel):
-    """¸üĞÂÊ§ÎïÄ£ĞÍ"""
+    """æ›´æ–°å¤±ç‰©æ¨¡å‹"""
     title: Optional[str] = None
     description: Optional[str] = None
     category: Optional[str] = None
@@ -32,7 +32,7 @@ class ItemUpdate(BaseModel):
 
 
 class LostItem(ItemBase):
-    """Ê§ÎïÄ£ĞÍ"""
+    """å¤±ç‰©æ¨¡å‹"""
     id: int
     image_url: Optional[str] = None
     ocr_text: Optional[str] = None
@@ -48,7 +48,7 @@ class LostItem(ItemBase):
 
 
 class FoundItem(ItemBase):
-    """ÕĞÁìÄ£ĞÍ"""
+    """æ‹›é¢†æ¨¡å‹"""
     id: int
     image_url: Optional[str] = None
     ocr_text: Optional[str] = None
@@ -64,7 +64,7 @@ class FoundItem(ItemBase):
 
 
 class ItemResponse(BaseModel):
-    """ÎïÆ·ÏìÓ¦Ä£ĞÍ"""
+    """ç‰©å“å“åº”æ¨¡å‹"""
     id: int
     title: str
     description: Optional[str] = None
@@ -84,7 +84,7 @@ class ItemResponse(BaseModel):
 
 
 class SearchRequest(BaseModel):
-    """ËÑË÷ÇëÇóÄ£ĞÍ"""
+    """æœç´¢è¯·æ±‚æ¨¡å‹"""
     query: str
     category: Optional[str] = None
     location: Optional[str] = None
@@ -93,7 +93,7 @@ class SearchRequest(BaseModel):
 
 
 class SearchResponse(BaseModel):
-    """ËÑË÷ÏìÓ¦Ä£ĞÍ"""
+    """æœç´¢å“åº”æ¨¡å‹"""
     items: List[ItemResponse]
     total: int
     page: int
@@ -101,32 +101,32 @@ class SearchResponse(BaseModel):
 
 
 class OCRRequest(BaseModel):
-    """OCRÇëÇóÄ£ĞÍ"""
+    """OCRè¯·æ±‚æ¨¡å‹"""
     image_url: str
-    language: str = "chi_sim+eng"  # ÖĞÎÄ¼òÌå+Ó¢ÎÄ
+    language: str = "chi_sim+eng"  # ä¸­æ–‡ç®€ä½“+è‹±æ–‡
 
 
 class OCRResponse(BaseModel):
-    """OCRÏìÓ¦Ä£ĞÍ"""
+    """OCRå“åº”æ¨¡å‹"""
     text: str
     confidence: float
     language: str
 
 
 class ClassificationRequest(BaseModel):
-    """·ÖÀàÇëÇóÄ£ĞÍ"""
+    """åˆ†ç±»è¯·æ±‚æ¨¡å‹"""
     image_url: str
 
 
 class ClassificationResponse(BaseModel):
-    """·ÖÀàÏìÓ¦Ä£ĞÍ"""
+    """åˆ†ç±»å“åº”æ¨¡å‹"""
     category: str
     confidence: float
     subcategories: Optional[List[str]] = None
 
 
 class UploadResponse(BaseModel):
-    """ÉÏ´«ÏìÓ¦Ä£ĞÍ"""
+    """ä¸Šä¼ å“åº”æ¨¡å‹"""
     filename: str
     url: str
     size: int

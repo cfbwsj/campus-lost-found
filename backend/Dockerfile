@@ -1,37 +1,38 @@
-# 使用Python 3.9官方镜像
-FROM python:3.9-slim
+# Use Python 3.9 official image
+FROM hub-mirror.c.163.com/library/python:3.9-slim
 
-# 设置工作目录
+# Set working directory
 WORKDIR /app
 
-# 安装系统依赖
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     tesseract-ocr-chi-sim \
     tesseract-ocr-chi-tra \
-    libgl1-mesa-glx \
+    libgl1-mesa-dri \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
     libxrender-dev \
     libgomp1 \
     libgcc-s1 \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# 复制requirements文件
+# Copy requirements file
 COPY requirements.txt .
 
-# 安装Python依赖
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 复制应用代码
+# Copy application code
 COPY . .
 
-# 创建上传目录
+# Create upload directories
 RUN mkdir -p uploads/images uploads/ocr uploads/classify
 
-# 暴露端口
+# Expose port
 EXPOSE 8000
 
-# 启动命令
+# Start command
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

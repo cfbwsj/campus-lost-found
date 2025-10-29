@@ -1,5 +1,5 @@
 """
-Êı¾İ¿âÅäÖÃºÍÁ¬½Ó¹ÜÀí
+æ•°æ®åº“é…ç½®å’Œè¿æ¥ç®¡ç†
 """
 
 from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, Boolean, Float
@@ -8,61 +8,61 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import os
 
-# Êı¾İ¿âÅäÖÃ
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/campus_lost_found")
+# æ•°æ®åº“é…ç½® - MySQL
+DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://root:password@localhost:3306/aiweb?charset=utf8mb4")
 
-# ´´½¨Êı¾İ¿âÒıÇæ
+# åˆ›å»ºæ•°æ®åº“å¼•æ“
 engine = create_engine(DATABASE_URL)
 
-# ´´½¨»á»°¹¤³§
+# åˆ›å»ºä¼šè¯å·¥å‚
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# ´´½¨»ù´¡Ä£ĞÍÀà
+# åˆ›å»ºåŸºç¡€æ¨¡å‹ç±»
 Base = declarative_base()
 
 
 class LostItem(Base):
-    """Ê§ÎïÄ£ĞÍ"""
+    """å¤±ç‰©æ¨¡å‹"""
     __tablename__ = "lost_items"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200), nullable=False, comment="Ê§Îï±êÌâ")
-    description = Column(Text, comment="Ê§ÎïÃèÊö")
-    category = Column(String(50), comment="ÎïÆ·Àà±ğ")
-    location = Column(String(200), comment="·¢ÏÖµØµã")
-    contact_info = Column(String(200), comment="ÁªÏµ·½Ê½")
-    image_url = Column(String(500), comment="Í¼Æ¬URL")
-    ocr_text = Column(Text, comment="OCRÊ¶±ğµÄÎÄ×Ö")
-    ai_category = Column(String(50), comment="AIÊ¶±ğµÄÀà±ğ")
-    confidence = Column(Float, comment="AIÊ¶±ğÖÃĞÅ¶È")
-    status = Column(String(20), default="lost", comment="×´Ì¬£ºlost/found/claimed")
-    created_at = Column(DateTime, default=datetime.utcnow, comment="´´½¨Ê±¼ä")
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="¸üĞÂÊ±¼ä")
-    is_active = Column(Boolean, default=True, comment="ÊÇ·ñÓĞĞ§")
+    title = Column(String(200), nullable=False, comment="å¤±ç‰©æ ‡é¢˜")
+    description = Column(Text, comment="å¤±ç‰©æè¿°")
+    category = Column(String(50), comment="ç‰©å“ç±»åˆ«")
+    location = Column(String(200), comment="å‘ç°åœ°ç‚¹")
+    contact_info = Column(String(200), comment="è”ç³»æ–¹å¼")
+    image_url = Column(String(500), comment="å›¾ç‰‡URL")
+    ocr_text = Column(Text, comment="OCRè¯†åˆ«çš„æ–‡å­—")
+    ai_category = Column(String(50), comment="AIè¯†åˆ«çš„ç±»åˆ«")
+    confidence = Column(Float, comment="AIè¯†åˆ«ç½®ä¿¡åº¦")
+    status = Column(String(20), default="lost", comment="çŠ¶æ€ï¼šlost/found/claimed")
+    created_at = Column(DateTime, default=datetime.utcnow, comment="åˆ›å»ºæ—¶é—´")
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="æ›´æ–°æ—¶é—´")
+    is_active = Column(Boolean, default=True, comment="æ˜¯å¦æœ‰æ•ˆ")
 
 
 class FoundItem(Base):
-    """ÕĞÁìÄ£ĞÍ"""
+    """æ‹›é¢†æ¨¡å‹"""
     __tablename__ = "found_items"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200), nullable=False, comment="ÕĞÁì±êÌâ")
-    description = Column(Text, comment="ÕĞÁìÃèÊö")
-    category = Column(String(50), comment="ÎïÆ·Àà±ğ")
-    location = Column(String(200), comment="·¢ÏÖµØµã")
-    contact_info = Column(String(200), comment="ÁªÏµ·½Ê½")
-    image_url = Column(String(500), comment="Í¼Æ¬URL")
-    ocr_text = Column(Text, comment="OCRÊ¶±ğµÄÎÄ×Ö")
-    ai_category = Column(String(50), comment="AIÊ¶±ğµÄÀà±ğ")
-    confidence = Column(Float, comment="AIÊ¶±ğÖÃĞÅ¶È")
-    status = Column(String(20), default="found", comment="×´Ì¬£ºfound/claimed")
-    created_at = Column(DateTime, default=datetime.utcnow, comment="´´½¨Ê±¼ä")
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="¸üĞÂÊ±¼ä")
-    is_active = Column(Boolean, default=True, comment="ÊÇ·ñÓĞĞ§")
+    title = Column(String(200), nullable=False, comment="æ‹›é¢†æ ‡é¢˜")
+    description = Column(Text, comment="æ‹›é¢†æè¿°")
+    category = Column(String(50), comment="ç‰©å“ç±»åˆ«")
+    location = Column(String(200), comment="å‘ç°åœ°ç‚¹")
+    contact_info = Column(String(200), comment="è”ç³»æ–¹å¼")
+    image_url = Column(String(500), comment="å›¾ç‰‡URL")
+    ocr_text = Column(Text, comment="OCRè¯†åˆ«çš„æ–‡å­—")
+    ai_category = Column(String(50), comment="AIè¯†åˆ«çš„ç±»åˆ«")
+    confidence = Column(Float, comment="AIè¯†åˆ«ç½®ä¿¡åº¦")
+    status = Column(String(20), default="found", comment="çŠ¶æ€ï¼šfound/claimed")
+    created_at = Column(DateTime, default=datetime.utcnow, comment="åˆ›å»ºæ—¶é—´")
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="æ›´æ–°æ—¶é—´")
+    is_active = Column(Boolean, default=True, comment="æ˜¯å¦æœ‰æ•ˆ")
 
 
 def get_db():
-    """»ñÈ¡Êı¾İ¿â»á»°"""
+    """è·å–æ•°æ®åº“ä¼šè¯"""
     db = SessionLocal()
     try:
         yield db
@@ -71,5 +71,5 @@ def get_db():
 
 
 def init_db():
-    """³õÊ¼»¯Êı¾İ¿â"""
+    """åˆå§‹åŒ–æ•°æ®åº“"""
     Base.metadata.create_all(bind=engine)

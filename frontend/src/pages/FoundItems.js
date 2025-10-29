@@ -33,14 +33,14 @@ const FoundItems = () => {
   const [status, setStatus] = useState('');
 
   const categories = [
-    'йж╩З/йЩбК╡Зф╥',
-    'г╝╟Э/ж╓╪Ч',
-    'т©Ёв/це©╗',
-    'йИ╪╝/нд╬ъ',
-    'рбнО/йнф╥',
-    'яш╬╣/еДйн',
-    'тк╤╞сцф╥',
-    'фДкШ'
+    'Ф┴▀Ф°╨/Ф∙╟Г═│Д╨╖Е⌠│',
+    'И▓╠Е▄┘/Х╞│Д╩╤',
+    'И▓╔Е▄≥/И≈╗Е█║',
+    'Д╧╕Г╠█/Ф√┤Е┘╥',
+    'Х║ёГ┴╘/И╔╟Е⌠│',
+    'Г°╪И∙°/И┘█И╔╟',
+    'Х©░Е┼╗Г■╗Е⌠│',
+    'Е┘╤Д╩√'
   ];
 
   useEffect(() => {
@@ -62,8 +62,8 @@ const FoundItems = () => {
       setTotal(result?.length || 0);
 
     } catch (error) {
-      console.error('╪стьупаЛап╠Мй╖╟э:', error);
-      message.error('╪стьйЩ╬щй╖╟э');
+      console.error('Е┼═Х╫╫Ф▀⌡И╒├Е┬≈Х║╗Е╓╠Х╢╔:', error);
+      message.error('Е┼═Х╫╫Ф∙╟Ф█╝Е╓╠Х╢╔');
     } finally {
       setLoading(false);
     }
@@ -80,8 +80,8 @@ const FoundItems = () => {
 
   const getStatusTag = (status) => {
     const statusMap = {
-      found: { color: 'green', text: 'упаЛжп' },
-      claimed: { color: 'default', text: 'ряхоаЛ' }
+      found: { color: 'green', text: 'Ф▀⌡И╒├Д╦╜' },
+      claimed: { color: 'default', text: 'Е╥╡Х╝╓И╒├' }
     };
     
     const statusInfo = statusMap[status] || statusMap['found'];
@@ -91,17 +91,17 @@ const FoundItems = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>? упаЛпео╒</h1>
-        <p>╡И©╢кЫспупаЛпео╒ё╛я╟урдЗ╤╙й╖╣днОф╥</p>
+        <h1> Ф▀⌡И╒├Д©║Ф│╞</h1>
+        <p>Ф÷╔Г°▀Ф┴─Ф°┴Ф▀⌡И╒├Д©║Ф│╞О╪▄Е╞╩Ф┴╬Ф┌╗Д╦╒Е╓╠Г └Г┴╘Е⌠│</p>
       </div>
 
       <div className="page-content">
-        {/* и╦я║лУ╪Ч */}
+        {/* Г╜⌡И─┴Ф²║Д╩╤ */}
         <Card style={{ marginBottom: 24 }}>
           <Row gutter={[16, 16]} align="middle">
             <Col xs={24} sm={12} md={8}>
               <Select
-                placeholder="я║тЯ╥жюЮ"
+                placeholder="И─┴Ф▀╘Е┬├Г╠╩"
                 allowClear
                 value={category}
                 onChange={setCategory}
@@ -114,25 +114,25 @@ const FoundItems = () => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <Select
-                placeholder="я║тЯв╢л╛"
+                placeholder="И─┴Ф▀╘Г┼╤Ф─│"
                 allowClear
                 value={status}
                 onChange={setStatus}
                 style={{ width: '100%' }}
               >
-                <Option value="found">упаЛжп</Option>
-                <Option value="claimed">ряхоаЛ</Option>
+                <Option value="found">Ф▀⌡И╒├Д╦╜</Option>
+                <Option value="claimed">Е╥╡Х╝╓И╒├</Option>
               </Select>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div style={{ color: '#666' }}>
-                ╧╡ {total} лУупаЛпео╒
+                Е┘╠ {total} Ф²║Ф▀⌡И╒├Д©║Ф│╞
               </div>
             </Col>
           </Row>
         </Card>
 
-        {/* упаЛап╠М */}
+        {/* Ф▀⌡И╒├Е┬≈Х║╗ */}
         {loading ? (
           <div className="loading-container">
             <Spin size="large" />
@@ -197,7 +197,7 @@ const FoundItems = () => {
               ))}
             </Row>
 
-            {/* ╥жрЁ */}
+            {/* Е┬├И║╣ */}
             {total > pageSize && (
               <div style={{ textAlign: 'center', marginTop: 24 }}>
                 <Pagination
@@ -207,7 +207,7 @@ const FoundItems = () => {
                   showSizeChanger
                   showQuickJumper
                   showTotal={(total, range) => 
-                    `╣з ${range[0]}-${range[1]} лУё╛╧╡ ${total} лУ`
+                    `Г╛╛ ${range[0]}-${range[1]} Ф²║О╪▄Е┘╠ ${total} Ф²║`
                   }
                   onChange={handlePageChange}
                 />
@@ -215,7 +215,7 @@ const FoundItems = () => {
             )}
           </>
         ) : (
-          <Empty description="тщнчупаЛпео╒" />
+          <Empty description="Ф ┌Ф≈═Ф▀⌡И╒├Д©║Ф│╞" />
         )}
       </div>
     </div>

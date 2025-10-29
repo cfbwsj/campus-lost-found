@@ -35,14 +35,14 @@ const LostItems = () => {
   const [status, setStatus] = useState('');
 
   const categories = [
-    '�ֻ�/�����Ʒ',
-    'Ǯ��/֤��',
-    'Կ��/�ſ�',
-    '�鼮/�ľ�',
-    '����/��Ʒ',
-    '�۾�/����',
-    '�˶���Ʒ',
-    '����'
+    '手机/数码产品',
+    '钱包/证件',
+    '钥匙/门卡',
+    '书籍/文具',
+    '衣物/饰品',
+    '眼镜/配饰',
+    '运动用品',
+    '其他'
   ];
 
   useEffect(() => {
@@ -64,8 +64,8 @@ const LostItems = () => {
       setTotal(result?.length || 0);
 
     } catch (error) {
-      console.error('����ʧ���б�ʧ��:', error);
-      message.error('��������ʧ��');
+      console.error('加载失物列表失败:', error);
+      message.error('加载数据失败');
     } finally {
       setLoading(false);
     }
@@ -82,9 +82,9 @@ const LostItems = () => {
 
   const getStatusTag = (status) => {
     const statusMap = {
-      lost: { color: 'orange', text: '��ʧ��' },
-      found: { color: 'green', text: '���ҵ�' },
-      claimed: { color: 'default', text: '������' }
+      lost: { color: 'orange', text: '丢失中' },
+      found: { color: 'green', text: '已找到' },
+      claimed: { color: 'default', text: '已认领' }
     };
     
     const statusInfo = statusMap[status] || statusMap['lost'];
@@ -94,17 +94,17 @@ const LostItems = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>? ʧ����Ϣ</h1>
-        <p>�鿴����ʧ����Ϣ�������һض�ʧ����Ʒ</p>
+        <h1> 失物信息</h1>
+        <p>查看所有失物信息，帮助找回丢失的物品</p>
       </div>
 
       <div className="page-content">
-        {/* ɸѡ���� */}
+        {/* 筛选条件 */}
         <Card style={{ marginBottom: 24 }}>
           <Row gutter={[16, 16]} align="middle">
             <Col xs={24} sm={12} md={8}>
               <Select
-                placeholder="ѡ�����"
+                placeholder="选择分类"
                 allowClear
                 value={category}
                 onChange={setCategory}
@@ -117,26 +117,26 @@ const LostItems = () => {
             </Col>
             <Col xs={24} sm={12} md={8}>
               <Select
-                placeholder="ѡ��״̬"
+                placeholder="选择状态"
                 allowClear
                 value={status}
                 onChange={setStatus}
                 style={{ width: '100%' }}
               >
-                <Option value="lost">��ʧ��</Option>
-                <Option value="found">���ҵ�</Option>
-                <Option value="claimed">������</Option>
+                <Option value="lost">丢失中</Option>
+                <Option value="found">已找到</Option>
+                <Option value="claimed">已认领</Option>
               </Select>
             </Col>
             <Col xs={24} sm={12} md={8}>
               <div style={{ color: '#666' }}>
-                �� {total} ��ʧ����Ϣ
+                共 {total} 条失物信息
               </div>
             </Col>
           </Row>
         </Card>
 
-        {/* ʧ���б� */}
+        {/* 失物列表 */}
         {loading ? (
           <div className="loading-container">
             <Spin size="large" />
@@ -201,7 +201,7 @@ const LostItems = () => {
               ))}
             </Row>
 
-            {/* ��ҳ */}
+            {/* 分页 */}
             {total > pageSize && (
               <div style={{ textAlign: 'center', marginTop: 24 }}>
                 <Pagination
@@ -211,7 +211,7 @@ const LostItems = () => {
                   showSizeChanger
                   showQuickJumper
                   showTotal={(total, range) => 
-                    `�� ${range[0]}-${range[1]} ������ ${total} ��`
+                    `第 ${range[0]}-${range[1]} 条，共 ${total} 条`
                   }
                   onChange={handlePageChange}
                 />
@@ -219,7 +219,7 @@ const LostItems = () => {
             )}
           </>
         ) : (
-          <Empty description="����ʧ����Ϣ" />
+          <Empty description="暂无失物信息" />
         )}
       </div>
     </div>

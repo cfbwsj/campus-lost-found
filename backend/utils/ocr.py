@@ -1,6 +1,6 @@
 """
-OCRÎÄ×ÖÊ¶±ğ¹¤¾ß
-Ê¹ÓÃTesseract½øĞĞÍ¼Æ¬ÎÄ×ÖÊ¶±ğ
+OCRæ–‡å­—è¯†åˆ«å·¥å…·
+ä½¿ç”¨Tesseractè¿›è¡Œå›¾ç‰‡æ–‡å­—è¯†åˆ«
 """
 
 import pytesseract
@@ -14,28 +14,28 @@ logger = logging.getLogger(__name__)
 
 
 class OCRProcessor:
-    """OCR´¦ÀíÆ÷"""
+    """OCRå¤„ç†å™¨"""
     
     def __init__(self):
-        # ÉèÖÃTesseractÂ·¾¶£¨WindowsĞèÒªÖ¸¶¨Â·¾¶£©
+        # è®¾ç½®Tesseractè·¯å¾„ï¼ˆWindowséœ€è¦æŒ‡å®šè·¯å¾„ï¼‰
         # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
         pass
     
     def preprocess_image(self, image_path: str) -> np.ndarray:
-        """Í¼ÏñÔ¤´¦Àí£¬Ìá¸ßOCRÊ¶±ğ×¼È·ÂÊ"""
-        # ¶ÁÈ¡Í¼Ïñ
+        """å›¾åƒé¢„å¤„ç†ï¼Œæé«˜OCRè¯†åˆ«å‡†ç¡®ç‡"""
+        # è¯»å–å›¾åƒ
         image = cv2.imread(image_path)
         
-        # ×ª»»Îª»Ò¶ÈÍ¼
+        # è½¬æ¢ä¸ºç°åº¦å›¾
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
-        # ½µÔë
+        # é™å™ª
         denoised = cv2.medianBlur(gray, 3)
         
-        # ¶şÖµ»¯
+        # äºŒå€¼åŒ–
         _, binary = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         
-        # ĞÎÌ¬Ñ§²Ù×÷£¬È¥³ıÔëµã
+        # å½¢æ€å­¦æ“ä½œï¼Œå»é™¤å™ªç‚¹
         kernel = np.ones((2, 2), np.uint8)
         cleaned = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
         
@@ -43,98 +43,98 @@ class OCRProcessor:
     
     def extract_text(self, image_path: str, language: str = "chi_sim+eng") -> Tuple[str, float]:
         """
-        ´ÓÍ¼Æ¬ÖĞÌáÈ¡ÎÄ×Ö
+        ä»å›¾ç‰‡ä¸­æå–æ–‡å­—
         
         Args:
-            image_path: Í¼Æ¬Â·¾¶
-            language: ÓïÑÔÉèÖÃ£¬Ä¬ÈÏÖĞÓ¢ÎÄ
+            image_path: å›¾ç‰‡è·¯å¾„
+            language: è¯­è¨€è®¾ç½®ï¼Œé»˜è®¤ä¸­è‹±æ–‡
             
         Returns:
-            (Ê¶±ğµÄÎÄ×Ö, ÖÃĞÅ¶È)
+            (è¯†åˆ«çš„æ–‡å­—, ç½®ä¿¡åº¦)
         """
         try:
-            # Ô¤´¦ÀíÍ¼Ïñ
+            # é¢„å¤„ç†å›¾åƒ
             processed_image = self.preprocess_image(image_path)
             
-            # OCRÊ¶±ğ
-            # »ñÈ¡ÏêÏ¸ĞÅÏ¢£¬°üÀ¨ÖÃĞÅ¶È
+            # OCRè¯†åˆ«
+            # è·å–è¯¦ç»†ä¿¡æ¯ï¼ŒåŒ…æ‹¬ç½®ä¿¡åº¦
             data = pytesseract.image_to_data(
                 processed_image,
                 lang=language,
                 output_type=pytesseract.Output.DICT
             )
             
-            # ÌáÈ¡ÎÄ×Ö
+            # æå–æ–‡å­—
             text = pytesseract.image_to_string(processed_image, lang=language)
             
-            # ¼ÆËãÆ½¾ùÖÃĞÅ¶È
+            # è®¡ç®—å¹³å‡ç½®ä¿¡åº¦
             confidences = [int(conf) for conf in data['conf'] if int(conf) > 0]
             avg_confidence = sum(confidences) / len(confidences) if confidences else 0
             
-            # ÇåÀíÎÄ×Ö
+            # æ¸…ç†æ–‡å­—
             cleaned_text = self._clean_text(text)
             
-            logger.info(f"OCRÊ¶±ğÍê³É: {len(cleaned_text)}¸ö×Ö·û, ÖÃĞÅ¶È: {avg_confidence:.2f}")
+            logger.info(f"OCRè¯†åˆ«å®Œæˆ: {len(cleaned_text)}ä¸ªå­—ç¬¦, ç½®ä¿¡åº¦: {avg_confidence:.2f}")
             
             return cleaned_text, avg_confidence
             
         except Exception as e:
-            logger.error(f"OCRÊ¶±ğÊ§°Ü: {str(e)}")
+            logger.error(f"OCRè¯†åˆ«å¤±è´¥: {str(e)}")
             return "", 0.0
     
     def _clean_text(self, text: str) -> str:
-        """ÇåÀíÊ¶±ğµÄÎÄ×Ö"""
+        """æ¸…ç†è¯†åˆ«çš„æ–‡å­—"""
         if not text:
             return ""
         
-        # ÒÆ³ı¶àÓàµÄ¿Õ°××Ö·û
+        # ç§»é™¤å¤šä½™çš„ç©ºç™½å­—ç¬¦
         lines = [line.strip() for line in text.split('\n') if line.strip()]
         cleaned_text = '\n'.join(lines)
         
-        # ÒÆ³ıÌØÊâ×Ö·û£¨¿ÉÑ¡£©
+        # ç§»é™¤ç‰¹æ®Šå­—ç¬¦ï¼ˆå¯é€‰ï¼‰
         # cleaned_text = re.sub(r'[^\w\s\u4e00-\u9fff]', '', cleaned_text)
         
         return cleaned_text
     
     def extract_text_from_url(self, image_url: str, language: str = "chi_sim+eng") -> Tuple[str, float]:
         """
-        ´ÓURLÍ¼Æ¬ÖĞÌáÈ¡ÎÄ×Ö
+        ä»URLå›¾ç‰‡ä¸­æå–æ–‡å­—
         
         Args:
-            image_url: Í¼Æ¬URL
-            language: ÓïÑÔÉèÖÃ
+            image_url: å›¾ç‰‡URL
+            language: è¯­è¨€è®¾ç½®
             
         Returns:
-            (Ê¶±ğµÄÎÄ×Ö, ÖÃĞÅ¶È)
+            (è¯†åˆ«çš„æ–‡å­—, ç½®ä¿¡åº¦)
         """
         import requests
         from io import BytesIO
         
         try:
-            # ÏÂÔØÍ¼Æ¬
+            # ä¸‹è½½å›¾ç‰‡
             response = requests.get(image_url)
             response.raise_for_status()
             
-            # ×ª»»ÎªPIL Image
+            # è½¬æ¢ä¸ºPIL Image
             image = Image.open(BytesIO(response.content))
             
-            # ×ª»»ÎªOpenCV¸ñÊ½
+            # è½¬æ¢ä¸ºOpenCVæ ¼å¼
             cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
             
-            # Ô¤´¦Àí
+            # é¢„å¤„ç†
             processed_image = self._preprocess_cv_image(cv_image)
             
-            # OCRÊ¶±ğ
+            # OCRè¯†åˆ«
             data = pytesseract.image_to_data(
                 processed_image,
                 lang=language,
                 output_type=pytesseract.Output.DICT
             )
             
-            # ÌáÈ¡ÎÄ×Ö
+            # æå–æ–‡å­—
             text = pytesseract.image_to_string(processed_image, lang=language)
             
-            # ¼ÆËãÖÃĞÅ¶È
+            # è®¡ç®—ç½®ä¿¡åº¦
             confidences = [int(conf) for conf in data['conf'] if int(conf) > 0]
             avg_confidence = sum(confidences) / len(confidences) if confidences else 0
             
@@ -143,22 +143,22 @@ class OCRProcessor:
             return cleaned_text, avg_confidence
             
         except Exception as e:
-            logger.error(f"´ÓURLÊ¶±ğOCRÊ§°Ü: {str(e)}")
+            logger.error(f"ä»URLè¯†åˆ«OCRå¤±è´¥: {str(e)}")
             return "", 0.0
     
     def _preprocess_cv_image(self, image: np.ndarray) -> np.ndarray:
-        """Ô¤´¦ÀíOpenCVÍ¼Ïñ"""
-        # ×ª»»Îª»Ò¶ÈÍ¼
+        """é¢„å¤„ç†OpenCVå›¾åƒ"""
+        # è½¬æ¢ä¸ºç°åº¦å›¾
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
-        # ½µÔë
+        # é™å™ª
         denoised = cv2.medianBlur(gray, 3)
         
-        # ¶şÖµ»¯
+        # äºŒå€¼åŒ–
         _, binary = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         
         return binary
 
 
-# È«¾ÖOCR´¦ÀíÆ÷ÊµÀı
+# å…¨å±€OCRå¤„ç†å™¨å®ä¾‹
 ocr_processor = OCRProcessor()

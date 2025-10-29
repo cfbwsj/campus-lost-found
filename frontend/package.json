@@ -1,7 +1,7 @@
 {
   "name": "campus-lost-found-frontend",
   "version": "1.0.0",
-  "description": "校园失物招领系统前端",
+  "description": "鏍″洯澶辩墿鎷涢绯荤粺鍓嶇",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -20,7 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --allowed-hosts all",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

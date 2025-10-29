@@ -1,5 +1,5 @@
 """
-ËÑË÷¹¦ÄÜAPIÂ·ÓÉ
+æœç´¢åŠŸèƒ½APIè·¯ç”±
 """
 
 from fastapi import APIRouter, HTTPException, Query, Depends
@@ -14,18 +14,18 @@ router = APIRouter()
 
 @router.get("/", response_model=SearchResponse)
 async def search_items(
-    q: str = Query(..., description="ËÑË÷¹Ø¼ü´Ê"),
-    category: Optional[str] = Query(None, description="ÎïÆ·Àà±ğ"),
-    location: Optional[str] = Query(None, description="µØµã"),
-    item_type: str = Query("all", description="ÎïÆ·ÀàĞÍ£ºlost/found/all"),
-    limit: int = Query(20, ge=1, le=100, description="Ã¿Ò³ÊıÁ¿"),
-    offset: int = Query(0, ge=0, description="Æ«ÒÆÁ¿"),
+    q: str = Query(..., description="æœç´¢å…³é”®è¯"),
+    category: Optional[str] = Query(None, description="ç‰©å“ç±»åˆ«"),
+    location: Optional[str] = Query(None, description="åœ°ç‚¹"),
+    item_type: str = Query("all", description="ç‰©å“ç±»å‹ï¼šlost/found/all"),
+    limit: int = Query(20, ge=1, le=100, description="æ¯é¡µæ•°é‡"),
+    offset: int = Query(0, ge=0, description="åç§»é‡"),
     db: Session = Depends(get_db)
 ):
-    """×ÛºÏËÑË÷Ê§ÎïºÍÕĞÁìĞÅÏ¢"""
+    """ç»¼åˆæœç´¢å¤±ç‰©å’Œæ‹›é¢†ä¿¡æ¯"""
     
     if not q.strip():
-        raise HTTPException(status_code=400, detail="ËÑË÷¹Ø¼ü´Ê²»ÄÜÎª¿Õ")
+        raise HTTPException(status_code=400, detail="æœç´¢å…³é”®è¯ä¸èƒ½ä¸ºç©º")
     
     try:
         filters = {}
@@ -37,7 +37,7 @@ async def search_items(
         all_results = []
         total_count = 0
         
-        # ËÑË÷Ê§Îï
+        # æœç´¢å¤±ç‰©
         if item_type in ["lost", "all"]:
             lost_results = es_client.search_lost_items(
                 query=q,
@@ -50,7 +50,7 @@ async def search_items(
                 all_results.append(item)
             total_count += lost_results["total"]
         
-        # ËÑË÷ÕĞÁì
+        # æœç´¢æ‹›é¢†
         if item_type in ["found", "all"]:
             found_results = es_client.search_found_items(
                 query=q,
@@ -63,10 +63,10 @@ async def search_items(
                 all_results.append(item)
             total_count += found_results["total"]
         
-        # °´Ê±¼äÅÅĞò
+        # æŒ‰æ—¶é—´æ’åº
         all_results.sort(key=lambda x: x.get("created_at", ""), reverse=True)
         
-        # ·ÖÒ³
+        # åˆ†é¡µ
         page = offset // limit + 1
         paginated_results = all_results[:limit]
         
@@ -78,21 +78,21 @@ async def search_items(
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"ËÑË÷Ê§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"æœç´¢å¤±è´¥: {str(e)}")
 
 
 @router.get("/lost", response_model=SearchResponse)
 async def search_lost_items(
-    q: str = Query(..., description="ËÑË÷¹Ø¼ü´Ê"),
-    category: Optional[str] = Query(None, description="ÎïÆ·Àà±ğ"),
-    location: Optional[str] = Query(None, description="µØµã"),
-    limit: int = Query(20, ge=1, le=100, description="Ã¿Ò³ÊıÁ¿"),
-    offset: int = Query(0, ge=0, description="Æ«ÒÆÁ¿")
+    q: str = Query(..., description="æœç´¢å…³é”®è¯"),
+    category: Optional[str] = Query(None, description="ç‰©å“ç±»åˆ«"),
+    location: Optional[str] = Query(None, description="åœ°ç‚¹"),
+    limit: int = Query(20, ge=1, le=100, description="æ¯é¡µæ•°é‡"),
+    offset: int = Query(0, ge=0, description="åç§»é‡")
 ):
-    """ËÑË÷Ê§ÎïĞÅÏ¢"""
+    """æœç´¢å¤±ç‰©ä¿¡æ¯"""
     
     if not q.strip():
-        raise HTTPException(status_code=400, detail="ËÑË÷¹Ø¼ü´Ê²»ÄÜÎª¿Õ")
+        raise HTTPException(status_code=400, detail="æœç´¢å…³é”®è¯ä¸èƒ½ä¸ºç©º")
     
     try:
         filters = {}
@@ -118,21 +118,21 @@ async def search_lost_items(
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"ËÑË÷Ê§ÎïÊ§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"æœç´¢å¤±ç‰©å¤±è´¥: {str(e)}")
 
 
 @router.get("/found", response_model=SearchResponse)
 async def search_found_items(
-    q: str = Query(..., description="ËÑË÷¹Ø¼ü´Ê"),
-    category: Optional[str] = Query(None, description="ÎïÆ·Àà±ğ"),
-    location: Optional[str] = Query(None, description="µØµã"),
-    limit: int = Query(20, ge=1, le=100, description="Ã¿Ò³ÊıÁ¿"),
-    offset: int = Query(0, ge=0, description="Æ«ÒÆÁ¿")
+    q: str = Query(..., description="æœç´¢å…³é”®è¯"),
+    category: Optional[str] = Query(None, description="ç‰©å“ç±»åˆ«"),
+    location: Optional[str] = Query(None, description="åœ°ç‚¹"),
+    limit: int = Query(20, ge=1, le=100, description="æ¯é¡µæ•°é‡"),
+    offset: int = Query(0, ge=0, description="åç§»é‡")
 ):
-    """ËÑË÷ÕĞÁìĞÅÏ¢"""
+    """æœç´¢æ‹›é¢†ä¿¡æ¯"""
     
     if not q.strip():
-        raise HTTPException(status_code=400, detail="ËÑË÷¹Ø¼ü´Ê²»ÄÜÎª¿Õ")
+        raise HTTPException(status_code=400, detail="æœç´¢å…³é”®è¯ä¸èƒ½ä¸ºç©º")
     
     try:
         filters = {}
@@ -158,15 +158,15 @@ async def search_found_items(
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"ËÑË÷ÕĞÁìÊ§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"æœç´¢æ‹›é¢†å¤±è´¥: {str(e)}")
 
 
 @router.get("/suggestions")
 async def get_search_suggestions(
-    q: str = Query(..., description="ËÑË÷Ç°×º"),
-    field: str = Query("title", description="½¨Òé×Ö¶Î")
+    q: str = Query(..., description="æœç´¢å‰ç¼€"),
+    field: str = Query("title", description="å»ºè®®å­—æ®µ")
 ):
-    """»ñÈ¡ËÑË÷½¨Òé"""
+    """è·å–æœç´¢å»ºè®®"""
     
     if not q.strip():
         return {"suggestions": []}
@@ -176,17 +176,17 @@ async def get_search_suggestions(
         return {"suggestions": suggestions}
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"»ñÈ¡ËÑË÷½¨ÒéÊ§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"è·å–æœç´¢å»ºè®®å¤±è´¥: {str(e)}")
 
 
 @router.get("/hot-keywords")
 async def get_hot_keywords():
-    """»ñÈ¡ÈÈÃÅËÑË÷¹Ø¼ü´Ê"""
+    """è·å–çƒ­é—¨æœç´¢å…³é”®è¯"""
     
-    # Ä£ÄâÈÈÃÅ¹Ø¼ü´ÊÊı¾İ
+    # æ¨¡æ‹Ÿçƒ­é—¨å…³é”®è¯æ•°æ®
     hot_keywords = [
-        "ÊÖ»ú", "Ç®°ü", "Ô¿³×", "Éí·İÖ¤", "Ñ§Éú¿¨",
-        "ÑÛ¾µ", "Êé°ü", "Ë®±­", "³äµçÆ÷", "¶ú»ú"
+        "æ‰‹æœº", "é’±åŒ…", "é’¥åŒ™", "èº«ä»½è¯", "å­¦ç”Ÿå¡",
+        "çœ¼é•œ", "ä¹¦åŒ…", "æ°´æ¯", "å……ç”µå™¨", "è€³æœº"
     ]
     
     return {"keywords": hot_keywords}
@@ -194,17 +194,17 @@ async def get_hot_keywords():
 
 @router.get("/categories")
 async def get_search_categories():
-    """»ñÈ¡ËÑË÷·ÖÀà"""
+    """è·å–æœç´¢åˆ†ç±»"""
     
     categories = [
-        {"key": "ÊÖ»ú/ÊıÂë²úÆ·", "count": 156},
-        {"key": "Ç®°ü/Ö¤¼ş", "count": 89},
-        {"key": "Ô¿³×/ÃÅ¿¨", "count": 67},
-        {"key": "Êé¼®/ÎÄ¾ß", "count": 234},
-        {"key": "ÒÂÎï/ÊÎÆ·", "count": 45},
-        {"key": "ÑÛ¾µ/ÅäÊÎ", "count": 23},
-        {"key": "ÔË¶¯ÓÃÆ·", "count": 34},
-        {"key": "ÆäËû", "count": 78}
+        {"key": "æ‰‹æœº/æ•°ç äº§å“", "count": 156},
+        {"key": "é’±åŒ…/è¯ä»¶", "count": 89},
+        {"key": "é’¥åŒ™/é—¨å¡", "count": 67},
+        {"key": "ä¹¦ç±/æ–‡å…·", "count": 234},
+        {"key": "è¡£ç‰©/é¥°å“", "count": 45},
+        {"key": "çœ¼é•œ/é…é¥°", "count": 23},
+        {"key": "è¿åŠ¨ç”¨å“", "count": 34},
+        {"key": "å…¶ä»–", "count": 78}
     ]
     
     return {"categories": categories}
@@ -212,17 +212,17 @@ async def get_search_categories():
 
 @router.get("/locations")
 async def get_search_locations():
-    """»ñÈ¡ÈÈÃÅËÑË÷µØµã"""
+    """è·å–çƒ­é—¨æœç´¢åœ°ç‚¹"""
     
     locations = [
-        {"key": "Í¼Êé¹İ", "count": 45},
-        {"key": "Ê³ÌÃ", "count": 32},
-        {"key": "½ÌÑ§Â¥", "count": 28},
-        {"key": "ËŞÉáÂ¥", "count": 23},
-        {"key": "²Ù³¡", "count": 19},
-        {"key": "ÊµÑéÊÒ", "count": 15},
-        {"key": "ĞĞÕşÂ¥", "count": 12},
-        {"key": "Ğ£ÃÅ¿Ú", "count": 8}
+        {"key": "å›¾ä¹¦é¦†", "count": 45},
+        {"key": "é£Ÿå ‚", "count": 32},
+        {"key": "æ•™å­¦æ¥¼", "count": 28},
+        {"key": "å®¿èˆæ¥¼", "count": 23},
+        {"key": "æ“åœº", "count": 19},
+        {"key": "å®éªŒå®¤", "count": 15},
+        {"key": "è¡Œæ”¿æ¥¼", "count": 12},
+        {"key": "æ ¡é—¨å£", "count": 8}
     ]
     
     return {"locations": locations}

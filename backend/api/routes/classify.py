@@ -1,5 +1,5 @@
 """
-AIÎïÆ··ÖÀàAPIÂ·ÓÉ
+AIç‰©å“åˆ†ç±»APIè·¯ç”±
 """
 
 from fastapi import APIRouter, HTTPException, UploadFile, File
@@ -11,14 +11,14 @@ router = APIRouter()
 
 @router.post("/", response_model=ClassificationResponse)
 async def classify_image(file: UploadFile = File(...)):
-    """¶ÔÉÏ´«µÄÍ¼Æ¬½øĞĞÎïÆ··ÖÀà"""
+    """å¯¹ä¸Šä¼ çš„å›¾ç‰‡è¿›è¡Œç‰©å“åˆ†ç±»"""
     
-    # ÑéÖ¤ÎÄ¼şÀàĞÍ
+    # éªŒè¯æ–‡ä»¶ç±»å‹
     if not file.content_type.startswith('image/'):
-        raise HTTPException(status_code=400, detail="ÎÄ¼ş±ØĞëÊÇÍ¼Æ¬¸ñÊ½")
+        raise HTTPException(status_code=400, detail="æ–‡ä»¶å¿…é¡»æ˜¯å›¾ç‰‡æ ¼å¼")
     
     try:
-        # ±£´æÉÏ´«µÄÎÄ¼ş
+        # ä¿å­˜ä¸Šä¼ çš„æ–‡ä»¶
         import os
         import shutil
         
@@ -30,13 +30,13 @@ async def classify_image(file: UploadFile = File(...)):
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        # AI·ÖÀà
+        # AIåˆ†ç±»
         category, confidence, subcategories = item_classifier.classify_image(file_path)
         
-        # É¾³ıÁÙÊ±ÎÄ¼ş
+        # åˆ é™¤ä¸´æ—¶æ–‡ä»¶
         os.remove(file_path)
         
-        # »ñÈ¡Àà±ğÖĞÎÄÃû³Æ
+        # è·å–ç±»åˆ«ä¸­æ–‡åç§°
         category_name = item_classifier.get_category_name(category)
         
         return ClassificationResponse(
@@ -46,18 +46,18 @@ async def classify_image(file: UploadFile = File(...)):
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"AI·ÖÀàÊ§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"AIåˆ†ç±»å¤±è´¥: {str(e)}")
 
 
 @router.post("/url", response_model=ClassificationResponse)
 async def classify_image_from_url(image_url: str):
-    """¶ÔURLÍ¼Æ¬½øĞĞÎïÆ··ÖÀà"""
+    """å¯¹URLå›¾ç‰‡è¿›è¡Œç‰©å“åˆ†ç±»"""
     
     try:
-        # AI·ÖÀà
+        # AIåˆ†ç±»
         category, confidence, subcategories = item_classifier.classify_image_from_url(image_url)
         
-        # »ñÈ¡Àà±ğÖĞÎÄÃû³Æ
+        # è·å–ç±»åˆ«ä¸­æ–‡åç§°
         category_name = item_classifier.get_category_name(category)
         
         return ClassificationResponse(
@@ -67,19 +67,19 @@ async def classify_image_from_url(image_url: str):
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"AI·ÖÀàÊ§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"AIåˆ†ç±»å¤±è´¥: {str(e)}")
 
 
 @router.get("/categories")
 async def get_categories():
-    """»ñÈ¡ËùÓĞÖ§³ÖµÄÎïÆ·Àà±ğ"""
+    """è·å–æ‰€æœ‰æ”¯æŒçš„ç‰©å“ç±»åˆ«"""
     categories = item_classifier.get_all_categories()
     return {"categories": categories}
 
 
 @router.get("/model-info")
 async def get_model_info():
-    """»ñÈ¡Ä£ĞÍĞÅÏ¢"""
+    """è·å–æ¨¡å‹ä¿¡æ¯"""
     return {
         "model_name": "ResNet50",
         "framework": "PyTorch",

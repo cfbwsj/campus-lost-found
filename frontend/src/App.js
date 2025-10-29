@@ -5,7 +5,7 @@ import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 
-// 导入页面组件
+// 瀵煎叆椤甸潰缁勪欢
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import LostItems from './pages/LostItems';
@@ -14,7 +14,7 @@ import Search from './pages/Search';
 import Upload from './pages/Upload';
 import ItemDetail from './pages/ItemDetail';
 
-// 设置dayjs中文
+// 璁剧疆dayjs涓枃
 dayjs.locale('zh-cn');
 
 function App() {

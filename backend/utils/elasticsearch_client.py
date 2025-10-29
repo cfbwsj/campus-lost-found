@@ -1,6 +1,6 @@
 """
-ElasticSearch¿Í»§¶Ë¹¤¾ß
-ÓÃÓÚÊµÏÖÄ£ºıËÑË÷ºÍÓïÒåËÑË÷¹¦ÄÜ
+ElasticSearchå®¢æˆ·ç«¯å·¥å…·
+ç”¨äºå®ç°æ¨¡ç³Šæœç´¢å’Œè¯­ä¹‰æœç´¢åŠŸèƒ½
 """
 
 from elasticsearch import Elasticsearch
@@ -13,43 +13,43 @@ logger = logging.getLogger(__name__)
 
 
 class ElasticSearchClient:
-    """ElasticSearch¿Í»§¶Ë"""
+    """ElasticSearchå®¢æˆ·ç«¯"""
     
     def __init__(self):
-        # ElasticSearchÁ¬½ÓÅäÖÃ
+        # ElasticSearchè¿æ¥é…ç½®
         self.es_host = os.getenv("ELASTICSEARCH_HOST", "localhost")
         self.es_port = int(os.getenv("ELASTICSEARCH_PORT", "9200"))
         self.es_url = f"http://{self.es_host}:{self.es_port}"
         
-        # Ë÷ÒıÃû³Æ
+        # ç´¢å¼•åç§°
         self.lost_items_index = "lost_items"
         self.found_items_index = "found_items"
         
-        # ³õÊ¼»¯¿Í»§¶Ë
+        # åˆå§‹åŒ–å®¢æˆ·ç«¯
         self.client = None
         self._init_client()
     
     def _init_client(self):
-        """³õÊ¼»¯ElasticSearch¿Í»§¶Ë"""
+        """åˆå§‹åŒ–ElasticSearchå®¢æˆ·ç«¯"""
         try:
             self.client = Elasticsearch([self.es_url])
             
-            # ²âÊÔÁ¬½Ó
+            # æµ‹è¯•è¿æ¥
             if self.client.ping():
-                logger.info("ElasticSearchÁ¬½Ó³É¹¦")
+                logger.info("ElasticSearchè¿æ¥æˆåŠŸ")
                 self._create_indices()
             else:
-                logger.warning("ElasticSearchÁ¬½ÓÊ§°Ü")
+                logger.warning("ElasticSearchè¿æ¥å¤±è´¥")
                 self.client = None
                 
         except Exception as e:
-            logger.error(f"ElasticSearch³õÊ¼»¯Ê§°Ü: {str(e)}")
+            logger.error(f"ElasticSearchåˆå§‹åŒ–å¤±è´¥: {str(e)}")
             self.client = None
     
     def _create_indices(self):
-        """´´½¨Ë÷ÒıºÍÓ³Éä"""
+        """åˆ›å»ºç´¢å¼•å’Œæ˜ å°„"""
         try:
-            # Ê§ÎïË÷ÒıÓ³Éä
+            # å¤±ç‰©ç´¢å¼•æ˜ å°„
             lost_items_mapping = {
                 "mappings": {
                     "properties": {
@@ -85,7 +85,7 @@ class ElasticSearchClient:
                 }
             }
             
-            # ÕĞÁìË÷ÒıÓ³Éä
+            # æ‹›é¢†ç´¢å¼•æ˜ å°„
             found_items_mapping = {
                 "mappings": {
                     "properties": {
@@ -121,21 +121,21 @@ class ElasticSearchClient:
                 }
             }
             
-            # ´´½¨Ê§ÎïË÷Òı
+            # åˆ›å»ºå¤±ç‰©ç´¢å¼•
             if not self.client.indices.exists(index=self.lost_items_index):
                 self.client.indices.create(index=self.lost_items_index, body=lost_items_mapping)
-                logger.info(f"´´½¨Ê§ÎïË÷Òı: {self.lost_items_index}")
+                logger.info(f"åˆ›å»ºå¤±ç‰©ç´¢å¼•: {self.lost_items_index}")
             
-            # ´´½¨ÕĞÁìË÷Òı
+            # åˆ›å»ºæ‹›é¢†ç´¢å¼•
             if not self.client.indices.exists(index=self.found_items_index):
                 self.client.indices.create(index=self.found_items_index, body=found_items_mapping)
-                logger.info(f"´´½¨ÕĞÁìË÷Òı: {self.found_items_index}")
+                logger.info(f"åˆ›å»ºæ‹›é¢†ç´¢å¼•: {self.found_items_index}")
                 
         except Exception as e:
-            logger.error(f"´´½¨Ë÷ÒıÊ§°Ü: {str(e)}")
+            logger.error(f"åˆ›å»ºç´¢å¼•å¤±è´¥: {str(e)}")
     
     def index_lost_item(self, item_data: Dict[str, Any]) -> bool:
-        """Ë÷ÒıÊ§ÎïÊı¾İ"""
+        """ç´¢å¼•å¤±ç‰©æ•°æ®"""
         if not self.client:
             return False
         
@@ -146,15 +146,15 @@ class ElasticSearchClient:
                 id=doc_id,
                 body=item_data
             )
-            logger.info(f"Ê§ÎïÊı¾İÒÑË÷Òı: ID {doc_id}")
+            logger.info(f"å¤±ç‰©æ•°æ®å·²ç´¢å¼•: ID {doc_id}")
             return True
             
         except Exception as e:
-            logger.error(f"Ë÷ÒıÊ§ÎïÊı¾İÊ§°Ü: {str(e)}")
+            logger.error(f"ç´¢å¼•å¤±ç‰©æ•°æ®å¤±è´¥: {str(e)}")
             return False
     
     def index_found_item(self, item_data: Dict[str, Any]) -> bool:
-        """Ë÷ÒıÕĞÁìÊı¾İ"""
+        """ç´¢å¼•æ‹›é¢†æ•°æ®"""
         if not self.client:
             return False
         
@@ -165,16 +165,16 @@ class ElasticSearchClient:
                 id=doc_id,
                 body=item_data
             )
-            logger.info(f"ÕĞÁìÊı¾İÒÑË÷Òı: ID {doc_id}")
+            logger.info(f"æ‹›é¢†æ•°æ®å·²ç´¢å¼•: ID {doc_id}")
             return True
             
         except Exception as e:
-            logger.error(f"Ë÷ÒıÕĞÁìÊı¾İÊ§°Ü: {str(e)}")
+            logger.error(f"ç´¢å¼•æ‹›é¢†æ•°æ®å¤±è´¥: {str(e)}")
             return False
     
     def search_lost_items(self, query: str, filters: Optional[Dict] = None, 
                          size: int = 20, from_: int = 0) -> Dict[str, Any]:
-        """ËÑË÷Ê§Îï"""
+        """æœç´¢å¤±ç‰©"""
         if not self.client:
             return {"hits": [], "total": 0}
         
@@ -204,7 +204,7 @@ class ElasticSearchClient:
                 "from": from_
             }
             
-            # Ìí¼Ó¹ıÂËÆ÷
+            # æ·»åŠ è¿‡æ»¤å™¨
             if filters:
                 if filters.get('category'):
                     search_body["query"]["bool"]["filter"].append({
@@ -230,12 +230,12 @@ class ElasticSearchClient:
             }
             
         except Exception as e:
-            logger.error(f"ËÑË÷Ê§ÎïÊ§°Ü: {str(e)}")
+            logger.error(f"æœç´¢å¤±ç‰©å¤±è´¥: {str(e)}")
             return {"hits": [], "total": 0}
     
     def search_found_items(self, query: str, filters: Optional[Dict] = None,
                           size: int = 20, from_: int = 0) -> Dict[str, Any]:
-        """ËÑË÷ÕĞÁì"""
+        """æœç´¢æ‹›é¢†"""
         if not self.client:
             return {"hits": [], "total": 0}
         
@@ -265,7 +265,7 @@ class ElasticSearchClient:
                 "from": from_
             }
             
-            # Ìí¼Ó¹ıÂËÆ÷
+            # æ·»åŠ è¿‡æ»¤å™¨
             if filters:
                 if filters.get('category'):
                     search_body["query"]["bool"]["filter"].append({
@@ -291,25 +291,25 @@ class ElasticSearchClient:
             }
             
         except Exception as e:
-            logger.error(f"ËÑË÷ÕĞÁìÊ§°Ü: {str(e)}")
+            logger.error(f"æœç´¢æ‹›é¢†å¤±è´¥: {str(e)}")
             return {"hits": [], "total": 0}
     
     def delete_document(self, index: str, doc_id: str) -> bool:
-        """É¾³ıÎÄµµ"""
+        """åˆ é™¤æ–‡æ¡£"""
         if not self.client:
             return False
         
         try:
             self.client.delete(index=index, id=doc_id)
-            logger.info(f"ÎÄµµÒÑÉ¾³ı: {index}/{doc_id}")
+            logger.info(f"æ–‡æ¡£å·²åˆ é™¤: {index}/{doc_id}")
             return True
             
         except Exception as e:
-            logger.error(f"É¾³ıÎÄµµÊ§°Ü: {str(e)}")
+            logger.error(f"åˆ é™¤æ–‡æ¡£å¤±è´¥: {str(e)}")
             return False
     
     def get_suggestions(self, query: str, field: str = "title") -> List[str]:
-        """»ñÈ¡ËÑË÷½¨Òé"""
+        """è·å–æœç´¢å»ºè®®"""
         if not self.client:
             return []
         
@@ -338,9 +338,9 @@ class ElasticSearchClient:
             return suggestions
             
         except Exception as e:
-            logger.error(f"»ñÈ¡ËÑË÷½¨ÒéÊ§°Ü: {str(e)}")
+            logger.error(f"è·å–æœç´¢å»ºè®®å¤±è´¥: {str(e)}")
             return []
 
 
-# È«¾ÖElasticSearch¿Í»§¶ËÊµÀı
+# å…¨å±€ElasticSearchå®¢æˆ·ç«¯å®ä¾‹
 es_client = ElasticSearchClient()

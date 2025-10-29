@@ -22,27 +22,27 @@ const Layout = ({ children }) => {
     {
       key: '/',
       icon: <HomeOutlined />,
-      label: 'Ê×Ò³',
+      label: 'é¦–é¡µ',
     },
     {
       key: '/lost',
       icon: <FileSearchOutlined />,
-      label: 'Ê§ÎïĞÅÏ¢',
+      label: 'å¤±ç‰©ä¿¡æ¯',
     },
     {
       key: '/found',
       icon: <BulbOutlined />,
-      label: 'ÕĞÁìĞÅÏ¢',
+      label: 'æ‹›é¢†ä¿¡æ¯',
     },
     {
       key: '/search',
       icon: <SearchOutlined />,
-      label: 'ÖÇÄÜËÑË÷',
+      label: 'æ™ºèƒ½æœç´¢',
     },
     {
       key: '/upload',
       icon: <PlusOutlined />,
-      label: '·¢²¼ĞÅÏ¢',
+      label: 'å‘å¸ƒä¿¡æ¯',
     },
   ];
 
@@ -70,7 +70,7 @@ const Layout = ({ children }) => {
           fontWeight: 'bold',
           color: '#1890ff'
         }}>
-          ? Ğ£Ô°Ê§ÎïÕĞÁì
+          ? æ ¡å›­å¤±ç‰©æ‹›é¢†
         </div>
         
         {isMobile ? (
@@ -81,7 +81,7 @@ const Layout = ({ children }) => {
           />
         ) : (
           <div style={{ color: '#666' }}>
-            »ùÓÚAI¼¼ÊõµÄÖÇÄÜÊ§ÎïÕĞÁìÆ½Ì¨
+            åŸºäºAIæŠ€æœ¯çš„æ™ºèƒ½å¤±ç‰©æ‹›é¢†å¹³å°
           </div>
         )}
       </Header>
@@ -110,9 +110,9 @@ const Layout = ({ children }) => {
         </Content>
       </AntLayout>
 
-      {/* ÒÆ¶¯¶Ë³éÌë²Ëµ¥ */}
+      {/* ç§»åŠ¨ç«¯æŠ½å±‰èœå• */}
       <Drawer
-        title="²Ëµ¥"
+        title="èœå•"
         placement="left"
         onClose={() => setMobileMenuVisible(false)}
         open={mobileMenuVisible}

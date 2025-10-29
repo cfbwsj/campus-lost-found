@@ -28,7 +28,8 @@ import { searchAPI } from '../services/api';
 const { Search } = Input;
 const { Option } = Select;
 
-const Search = () => {
+const SearchPage = () => {
+
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   
@@ -47,7 +48,7 @@ const Search = () => {
   const [hotKeywords, setHotKeywords] = useState([]);
 
   useEffect(() => {
-    // ´ÓURL²ÎÊý³õÊ¼»¯ËÑË÷Ìõ¼þ
+    // ä»ŽURLå‚æ•°åˆå§‹åŒ–æœç´¢æ¡ä»¶
     const q = searchParams.get('q') || '';
     const cat = searchParams.get('category') || '';
     const loc = searchParams.get('location') || '';
@@ -60,7 +61,7 @@ const Search = () => {
     
     loadInitialData();
     
-    // Èç¹ûÓÐËÑË÷¹Ø¼ü´Ê£¬×Ô¶¯ËÑË÷
+    // å¦‚æžœæœ‰æœç´¢å…³é”®è¯ï¼Œè‡ªåŠ¨æœç´¢
     if (q) {
       handleSearch(q, cat, loc, type);
     }
@@ -78,13 +79,13 @@ const Search = () => {
       setLocations(locationsRes.locations || []);
       setHotKeywords(keywordsRes.keywords || []);
     } catch (error) {
-      console.error('¼ÓÔØ³õÊ¼Êý¾ÝÊ§°Ü:', error);
+      console.error('åŠ è½½åˆå§‹æ•°æ®å¤±è´¥:', error);
     }
   };
 
   const handleSearch = async (query = searchValue, cat = category, loc = location, type = itemType) => {
     if (!query.trim()) {
-      message.warning('ÇëÊäÈëËÑË÷¹Ø¼ü´Ê');
+      message.warning('è¯·è¾“å…¥æœç´¢å…³é”®è¯');
       return;
     }
 
@@ -104,7 +105,7 @@ const Search = () => {
       setSearchResults(result.items || []);
       setTotal(result.total || 0);
       
-      // ¸üÐÂURL²ÎÊý
+      // æ›´æ–°URLå‚æ•°
       const newParams = new URLSearchParams();
       newParams.set('q', query.trim());
       if (cat) newParams.set('category', cat);
@@ -113,8 +114,8 @@ const Search = () => {
       setSearchParams(newParams);
 
     } catch (error) {
-      console.error('ËÑË÷Ê§°Ü:', error);
-      message.error('ËÑË÷Ê§°Ü');
+      console.error('æœç´¢å¤±è´¥:', error);
+      message.error('æœç´¢å¤±è´¥');
     } finally {
       setLoading(false);
     }
@@ -139,9 +140,9 @@ const Search = () => {
 
   const getStatusTag = (status, type) => {
     const statusMap = {
-      lost: { color: 'orange', text: '¶ªÊ§' },
-      found: { color: 'green', text: 'ÕÐÁì' },
-      claimed: { color: 'default', text: 'ÒÑÈÏÁì' }
+      lost: { color: 'orange', text: 'ä¸¢å¤±' },
+      found: { color: 'green', text: 'æ‹›é¢†' },
+      claimed: { color: 'default', text: 'å·²è®¤é¢†' }
     };
     
     const statusInfo = statusMap[status] || statusMap[type];
@@ -155,17 +156,17 @@ const Search = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>? ÖÇÄÜËÑË÷</h1>
-        <p>Ö§³ÖÄ£ºýÆ¥Åä¡¢·ÖÀàÉ¸Ñ¡ºÍµØµãËÑË÷</p>
+        <h1> æ™ºèƒ½æœç´¢</h1>
+        <p>æ”¯æŒæ¨¡ç³ŠåŒ¹é…ã€åˆ†ç±»ç­›é€‰å’Œåœ°ç‚¹æœç´¢</p>
       </div>
 
       <div className="page-content">
-        {/* ËÑË÷ÇøÓò */}
+        {/* æœç´¢åŒºåŸŸ */}
         <Card className="search-container">
           <Row gutter={[16, 16]} align="bottom">
             <Col xs={24} sm={12} md={8}>
               <Search
-                placeholder="ÊäÈë¹Ø¼ü´ÊËÑË÷..."
+                placeholder="è¾“å…¥å…³é”®è¯æœç´¢..."
                 allowClear
                 enterButton={<SearchOutlined />}
                 size="large"
@@ -176,7 +177,7 @@ const Search = () => {
             </Col>
             <Col xs={24} sm={12} md={4}>
               <Select
-                placeholder="·ÖÀà"
+                placeholder="åˆ†ç±»"
                 allowClear
                 size="large"
                 value={category}
@@ -192,7 +193,7 @@ const Search = () => {
             </Col>
             <Col xs={24} sm={12} md={4}>
               <Select
-                placeholder="µØµã"
+                placeholder="åœ°ç‚¹"
                 allowClear
                 size="large"
                 value={location}
@@ -208,15 +209,15 @@ const Search = () => {
             </Col>
             <Col xs={24} sm={12} md={4}>
               <Select
-                placeholder="ÀàÐÍ"
+                placeholder="ç±»åž‹"
                 size="large"
                 value={itemType}
                 onChange={setItemType}
                 style={{ width: '100%' }}
               >
-                <Option value="all">È«²¿</Option>
-                <Option value="lost">Ê§Îï</Option>
-                <Option value="found">ÕÐÁì</Option>
+                <Option value="all">å…¨éƒ¨</Option>
+                <Option value="lost">å¤±ç‰©</Option>
+                <Option value="found">æ‹›é¢†</Option>
               </Select>
             </Col>
             <Col xs={24} sm={12} md={4}>
@@ -227,16 +228,16 @@ const Search = () => {
                 loading={loading}
                 block
               >
-                ËÑË÷
+                æœç´¢
               </Button>
             </Col>
           </Row>
 
-          {/* ÈÈÃÅ¹Ø¼ü´Ê */}
+          {/* çƒ­é—¨å…³é”®è¯ */}
           {hotKeywords.length > 0 && (
             <div style={{ marginTop: 16 }}>
               <Space wrap>
-                <span style={{ color: '#666' }}>ÈÈÃÅËÑË÷£º</span>
+                <span style={{ color: '#666' }}>çƒ­é—¨æœç´¢ï¼š</span>
                 {hotKeywords.map((keyword, index) => (
                   <Tag
                     key={index}
@@ -251,8 +252,8 @@ const Search = () => {
           )}
         </Card>
 
-        {/* ËÑË÷½á¹û */}
-        <Card title={`ËÑË÷½á¹û (${total} Ìõ)`}>
+        {/* æœç´¢ç»“æžœ */}
+        <Card title={`æœç´¢ç»“æžœ (${total} æ¡)`}>
           {loading ? (
             <div className="loading-container">
               <Spin size="large" />
@@ -303,7 +304,7 @@ const Search = () => {
                 )}
               />
               
-              {/* ·ÖÒ³ */}
+              {/* åˆ†é¡µ */}
               {total > pageSize && (
                 <div style={{ textAlign: 'center', marginTop: 24 }}>
                   <Pagination
@@ -313,7 +314,7 @@ const Search = () => {
                     showSizeChanger
                     showQuickJumper
                     showTotal={(total, range) => 
-                      `µÚ ${range[0]}-${range[1]} Ìõ£¬¹² ${total} Ìõ`
+                      `ç¬¬ ${range[0]}-${range[1]} æ¡ï¼Œå…± ${total} æ¡`
                     }
                     onChange={handlePageChange}
                   />
@@ -321,7 +322,7 @@ const Search = () => {
               )}
             </>
           ) : (
-            <Empty description="ÔÝÎÞËÑË÷½á¹û" />
+            <Empty description="æš‚æ— æœç´¢ç»“æžœ" />
           )}
         </Card>
       </div>
@@ -329,4 +330,5 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchPage;
+

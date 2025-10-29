@@ -29,7 +29,7 @@ const { Title, Paragraph } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
-const Upload = () => {
+const UploadPage = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -38,14 +38,14 @@ const Upload = () => {
   const [processing, setProcessing] = useState(false);
 
   const categories = [
-    '�ֻ�/�����Ʒ',
-    'Ǯ��/֤��',
-    'Կ��/�ſ�',
-    '�鼮/�ľ�',
-    '����/��Ʒ',
-    '�۾�/����',
-    '�˶���Ʒ',
-    '����'
+    '手机/数码产品',
+    '钱包/证件',
+    '钥匙/门卡',
+    '书籍/文具',
+    '衣物/饰品',
+    '眼镜/配饰',
+    '运动用品',
+    '其他'
   ];
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -75,16 +75,16 @@ const Upload = () => {
       }));
 
       setUploadedFiles(prev => [...prev, ...newFiles]);
-      message.success(`�ɹ��ϴ� ${acceptedFiles.length} ���ļ�`);
+      message.success(`成功上传 ${acceptedFiles.length} 个文件`);
 
-      // �Զ�����OCR��AI����
+      // 自动进行OCR和AI分类
       if (acceptedFiles.length > 0) {
         await processImage(acceptedFiles[0], results[0].url);
       }
 
     } catch (error) {
-      console.error('�ļ��ϴ�ʧ��:', error);
-      message.error('�ļ��ϴ�ʧ��');
+      console.error('文件上传失败:', error);
+      message.error('文件上传失败');
     } finally {
       setLoading(false);
     }
@@ -93,7 +93,7 @@ const Upload = () => {
   const processImage = async (file, imageUrl) => {
     setProcessing(true);
     try {
-      // ���н���OCR��AI����
+      // 并行进行OCR和AI分类
       const [ocrRes, classifyRes] = await Promise.all([
         ocrAPI.extractText(file),
         classifyAPI.classifyImage(file)
@@ -102,7 +102,7 @@ const Upload = () => {
       setOcrResult(ocrRes);
       setAiClassification(classifyRes);
 
-      // �Զ�������
+      // 自动填充表单
       if (ocrRes.text) {
         form.setFieldsValue({
           description: ocrRes.text
@@ -115,11 +115,11 @@ const Upload = () => {
         });
       }
 
-      message.success('ͼƬ�������');
+      message.success('图片处理完成');
 
     } catch (error) {
-      console.error('ͼƬ����ʧ��:', error);
-      message.error('ͼƬ����ʧ��');
+      console.error('图片处理失败:', error);
+      message.error('图片处理失败');
     } finally {
       setProcessing(false);
     }
@@ -131,7 +131,7 @@ const Upload = () => {
 
   const handleSubmit = async (values) => {
     if (uploadedFiles.length === 0) {
-      message.error('�������ϴ�һ��ͼƬ');
+      message.error('请至少上传一张图片');
       return;
     }
 
@@ -145,18 +145,18 @@ const Upload = () => {
         confidence: aiClassification?.confidence || 0
       };
 
-      // ������ݱ������;��������ĸ�API
+      // 这里根据表单类型决定调用哪个API
       // const result = await lostItemsAPI.createLostItem(submitData);
       
-      message.success('�����ɹ���');
+      message.success('发布成功！');
       form.resetFields();
       setUploadedFiles([]);
       setOcrResult(null);
       setAiClassification(null);
 
     } catch (error) {
-      console.error('�ύʧ��:', error);
-      message.error('�ύʧ��');
+      console.error('提交失败:', error);
+      message.error('提交失败');
     } finally {
       setLoading(false);
     }
@@ -165,17 +165,17 @@ const Upload = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <Title level={2}>����ʧ��/������Ϣ</Title>
+        <Title level={2}>发布失物/招领信息</Title>
         <Paragraph>
-          �ϴ���Ʒ��Ƭ��ϵͳ���Զ�����OCR����ʶ���AI��Ʒ����
+          上传物品照片，系统将自动进行OCR文字识别和AI物品分类
         </Paragraph>
       </div>
 
       <div className="page-content">
         <Row gutter={[24, 24]}>
-          {/* ��ࣺ���� */}
+          {/* 左侧：表单 */}
           <Col xs={24} lg={14}>
-            <Card title="������Ϣ">
+            <Card title="基本信息">
               <Form
                 form={form}
                 layout="vertical"
@@ -183,31 +183,31 @@ const Upload = () => {
               >
                 <Form.Item
                   name="type"
-                  label="��Ϣ����"
-                  rules={[{ required: true, message: '��ѡ����Ϣ����' }]}
+                  label="信息类型"
+                  rules={[{ required: true, message: '请选择信息类型' }]}
                 >
-                  <Select placeholder="��ѡ��">
-                    <Option value="lost">ʧ����Ϣ</Option>
-                    <Option value="found">������Ϣ</Option>
+                  <Select placeholder="请选择">
+                    <Option value="lost">失物信息</Option>
+                    <Option value="found">招领信息</Option>
                   </Select>
                 </Form.Item>
 
                 <Form.Item
                   name="title"
-                  label="����"
-                  rules={[{ required: true, message: '���������' }]}
+                  label="标题"
+                  rules={[{ required: true, message: '请输入标题' }]}
                 >
-                  <Input placeholder="��������Ʒ����" />
+                  <Input placeholder="请输入物品标题" />
                 </Form.Item>
 
                 <Form.Item
                   name="description"
-                  label="��ϸ����"
-                  rules={[{ required: true, message: '��������ϸ����' }]}
+                  label="详细描述"
+                  rules={[{ required: true, message: '请输入详细描述' }]}
                 >
                   <TextArea 
                     rows={4} 
-                    placeholder="����ϸ������Ʒ���������ֵص����Ϣ"
+                    placeholder="请详细描述物品特征、发现地点等信息"
                   />
                 </Form.Item>
 
@@ -215,9 +215,9 @@ const Upload = () => {
                   <Col span={12}>
                     <Form.Item
                       name="category"
-                      label="��Ʒ���"
+                      label="物品类别"
                     >
-                      <Select placeholder="��ѡ�����" allowClear>
+                      <Select placeholder="请选择类别" allowClear>
                         {categories.map(category => (
                           <Option key={category} value={category}>
                             {category}
@@ -229,19 +229,19 @@ const Upload = () => {
                   <Col span={12}>
                     <Form.Item
                       name="location"
-                      label="���ֵص�"
+                      label="发现地点"
                     >
-                      <Input placeholder="�����뷢�ֵص�" />
+                      <Input placeholder="请输入发现地点" />
                     </Form.Item>
                   </Col>
                 </Row>
 
                 <Form.Item
                   name="contact_info"
-                  label="��ϵ��ʽ"
-                  rules={[{ required: true, message: '��������ϵ��ʽ' }]}
+                  label="联系方式"
+                  rules={[{ required: true, message: '请输入联系方式' }]}
                 >
-                  <Input placeholder="������������ϵ��ʽ" />
+                  <Input placeholder="请输入您的联系方式" />
                 </Form.Item>
 
                 <Form.Item>
@@ -252,30 +252,30 @@ const Upload = () => {
                     size="large"
                     block
                   >
-                    ������Ϣ
+                    发布信息
                   </Button>
                 </Form.Item>
               </Form>
             </Card>
           </Col>
 
-          {/* �ҲࣺͼƬ�ϴ��ʹ������ */}
+          {/* 右侧：图片上传和处理结果 */}
           <Col xs={24} lg={10}>
-            {/* ͼƬ�ϴ� */}
-            <Card title="�ϴ�ͼƬ" style={{ marginBottom: 24 }}>
+            {/* 图片上传 */}
+            <Card title="上传图片" style={{ marginBottom: 24 }}>
               <div
                 {...getRootProps()}
                 className={`upload-dragger ${isDragActive ? 'ant-upload-drag-hover' : ''}`}
               >
                 <input {...getInputProps()} />
                 {isDragActive ? (
-                  <p>��ͼƬ��ק������...</p>
+                  <p>将图片拖拽到这里...</p>
                 ) : (
                   <div>
                     <UploadOutlined style={{ fontSize: 48, color: '#1890ff', marginBottom: 16 }} />
-                    <p>�������קͼƬ���������ϴ�</p>
+                    <p>点击或拖拽图片到此区域上传</p>
                     <p style={{ color: '#999', fontSize: '12px' }}>
-                      ֧�� PNG��JPG��JPEG��GIF��BMP��WEBP ��ʽ�������ļ������� 10MB
+                      支持 PNG、JPG、JPEG、GIF、BMP、WEBP 格式，单个文件不超过 10MB
                     </p>
                   </div>
                 )}
@@ -284,7 +284,7 @@ const Upload = () => {
               {loading && (
                 <div style={{ marginTop: 16 }}>
                   <Progress percent={50} status="active" />
-                  <p style={{ textAlign: 'center', marginTop: 8 }}>�����ϴ�...</p>
+                  <p style={{ textAlign: 'center', marginTop: 8 }}>正在上传...</p>
                 </div>
               )}
 
@@ -292,15 +292,15 @@ const Upload = () => {
                 <div style={{ marginTop: 16 }}>
                   <Progress percent={75} status="active" />
                   <p style={{ textAlign: 'center', marginTop: 8 }}>
-                    <RobotOutlined /> ����AI������...
+                    <RobotOutlined /> 正在AI处理中...
                   </p>
                 </div>
               )}
 
-              {/* ���ϴ����ļ� */}
+              {/* 已上传的文件 */}
               {uploadedFiles.length > 0 && (
                 <div style={{ marginTop: 16 }}>
-                  <Title level={5}>���ϴ���ͼƬ��</Title>
+                  <Title level={5}>已上传的图片：</Title>
                   <Row gutter={[8, 8]}>
                     {uploadedFiles.map(file => (
                       <Col key={file.id} span={8}>
@@ -325,7 +325,7 @@ const Upload = () => {
                             }}
                             onClick={() => handleRemoveFile(file.id)}
                           >
-                            ɾ��
+                            删除
                           </Button>
                         </div>
                       </Col>
@@ -335,37 +335,37 @@ const Upload = () => {
               )}
             </Card>
 
-            {/* OCR��� */}
+            {/* OCR结果 */}
             {ocrResult && (
               <Card title={
                 <Space>
                   <FileTextOutlined />
-                  OCRʶ����
-                  <Tag color="green">���Ŷ�: {(ocrResult.confidence || 0).toFixed(1)}%</Tag>
+                  OCR识别结果
+                  <Tag color="green">置信度: {(ocrResult.confidence || 0).toFixed(1)}%</Tag>
                 </Space>
               } style={{ marginBottom: 24 }}>
                 <div className="ocr-result">
                   <Paragraph copyable={{ text: ocrResult.text }}>
-                    {ocrResult.text || 'δʶ������'}
+                    {ocrResult.text || '未识别到文字'}
                   </Paragraph>
                 </div>
               </Card>
             )}
 
-            {/* AI������ */}
+            {/* AI分类结果 */}
             {aiClassification && (
               <Card title={
                 <Space>
                   <RobotOutlined />
-                  AI��Ʒ����
-                  <Tag color="blue">���Ŷ�: {(aiClassification.confidence * 100).toFixed(1)}%</Tag>
+                  AI物品分类
+                  <Tag color="blue">置信度: {(aiClassification.confidence * 100).toFixed(1)}%</Tag>
                 </Space>
               }>
                 <div className="ai-classification">
-                  <Title level={4}>ʶ�����{aiClassification.category}</Title>
+                  <Title level={4}>识别类别：{aiClassification.category}</Title>
                   {aiClassification.subcategories && (
                     <div style={{ marginTop: 12 }}>
-                      <Title level={5}>���ܵ����</Title>
+                      <Title level={5}>可能的类别：</Title>
                       <Space wrap>
                         {aiClassification.subcategories.map((sub, index) => (
                           <Tag key={index}>{sub}</Tag>
@@ -383,4 +383,4 @@ const Upload = () => {
   );
 };
 
-export default Upload;
+export default UploadPage;

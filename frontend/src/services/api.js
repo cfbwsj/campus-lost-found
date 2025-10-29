@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// ´´½¨axiosÊµÀı
+// åˆ›å»ºaxioså®ä¾‹
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000',
   timeout: 10000,
@@ -9,10 +9,10 @@ const api = axios.create({
   },
 });
 
-// ÇëÇóÀ¹½ØÆ÷
+// è¯·æ±‚æ‹¦æˆªå™¨
 api.interceptors.request.use(
   (config) => {
-    // ¿ÉÒÔÔÚÕâÀïÌí¼ÓtokenµÈÈÏÖ¤ĞÅÏ¢
+    // å¯ä»¥åœ¨è¿™é‡Œæ·»åŠ tokenç­‰è®¤è¯ä¿¡æ¯
     return config;
   },
   (error) => {
@@ -20,7 +20,7 @@ api.interceptors.request.use(
   }
 );
 
-// ÏìÓ¦À¹½ØÆ÷
+// å“åº”æ‹¦æˆªå™¨
 api.interceptors.response.use(
   (response) => {
     return response.data;
@@ -31,69 +31,69 @@ api.interceptors.response.use(
   }
 );
 
-// Ê§Îï¹ÜÀíAPI
+// å¤±ç‰©ç®¡ç†API
 export const lostItemsAPI = {
-  // »ñÈ¡Ê§ÎïÁĞ±í
+  // è·å–å¤±ç‰©åˆ—è¡¨
   getLostItems: (params) => api.get('/api/items/lost', { params }),
   
-  // »ñÈ¡Ê§ÎïÏêÇé
+  // è·å–å¤±ç‰©è¯¦æƒ…
   getLostItem: (id) => api.get(`/api/items/lost/${id}`),
   
-  // ´´½¨Ê§Îï
+  // åˆ›å»ºå¤±ç‰©
   createLostItem: (data) => api.post('/api/items/lost', data),
   
-  // ¸üĞÂÊ§Îï
+  // æ›´æ–°å¤±ç‰©
   updateLostItem: (id, data) => api.put(`/api/items/lost/${id}`, data),
   
-  // É¾³ıÊ§Îï
+  // åˆ é™¤å¤±ç‰©
   deleteLostItem: (id) => api.delete(`/api/items/lost/${id}`),
 };
 
-// ÕĞÁì¹ÜÀíAPI
+// æ‹›é¢†ç®¡ç†API
 export const foundItemsAPI = {
-  // »ñÈ¡ÕĞÁìÁĞ±í
+  // è·å–æ‹›é¢†åˆ—è¡¨
   getFoundItems: (params) => api.get('/api/items/found', { params }),
   
-  // »ñÈ¡ÕĞÁìÏêÇé
+  // è·å–æ‹›é¢†è¯¦æƒ…
   getFoundItem: (id) => api.get(`/api/items/found/${id}`),
   
-  // ´´½¨ÕĞÁì
+  // åˆ›å»ºæ‹›é¢†
   createFoundItem: (data) => api.post('/api/items/found', data),
   
-  // ¸üĞÂÕĞÁì
+  // æ›´æ–°æ‹›é¢†
   updateFoundItem: (id, data) => api.put(`/api/items/found/${id}`, data),
   
-  // É¾³ıÕĞÁì
+  // åˆ é™¤æ‹›é¢†
   deleteFoundItem: (id) => api.delete(`/api/items/found/${id}`),
 };
 
-// ËÑË÷API
+// æœç´¢API
 export const searchAPI = {
-  // ×ÛºÏËÑË÷
+  // ç»¼åˆæœç´¢
   searchItems: (params) => api.get('/api/search', { params }),
   
-  // ËÑË÷Ê§Îï
+  // æœç´¢å¤±ç‰©
   searchLostItems: (params) => api.get('/api/search/lost', { params }),
   
-  // ËÑË÷ÕĞÁì
+  // æœç´¢æ‹›é¢†
   searchFoundItems: (params) => api.get('/api/search/found', { params }),
   
-  // »ñÈ¡ËÑË÷½¨Òé
+  // è·å–æœç´¢å»ºè®®
   getSuggestions: (params) => api.get('/api/search/suggestions', { params }),
   
-  // »ñÈ¡ÈÈÃÅ¹Ø¼ü´Ê
+  // è·å–çƒ­é—¨å…³é”®è¯
   getHotKeywords: () => api.get('/api/search/hot-keywords'),
   
-  // »ñÈ¡·ÖÀà
+  // è·å–åˆ†ç±»
   getCategories: () => api.get('/api/search/categories'),
   
-  // »ñÈ¡µØµã
+  // è·å–åœ°ç‚¹
   getLocations: () => api.get('/api/search/locations'),
 };
 
-// ÎÄ¼şÉÏ´«API
+// æ–‡ä»¶ä¸Šä¼ API
 export const uploadAPI = {
-  // ÉÏ´«µ¥¸öÎÄ¼ş
+  // ä¸Šä¼ å•ä¸ªæ–‡ä»¶
   uploadFile: (file) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -104,7 +104,7 @@ export const uploadAPI = {
     });
   },
   
-  // ÉÏ´«¶à¸öÎÄ¼ş
+  // ä¸Šä¼ å¤šä¸ªæ–‡ä»¶
   uploadMultipleFiles: (files) => {
     const formData = new FormData();
     files.forEach(file => {
@@ -117,16 +117,16 @@ export const uploadAPI = {
     });
   },
   
-  // É¾³ıÎÄ¼ş
+  // åˆ é™¤æ–‡ä»¶
   deleteFile: (filename) => api.delete(`/api/upload/${filename}`),
   
-  // »ñÈ¡ÉÏ´«ĞÅÏ¢
+  // è·å–ä¸Šä¼ ä¿¡æ¯
   getUploadInfo: () => api.get('/api/upload/info'),
 };
 
 // OCR API
 export const ocrAPI = {
-  // OCRÊ¶±ğ
+  // OCRè¯†åˆ«
   extractText: (file, language = 'chi_sim+eng') => {
     const formData = new FormData();
     formData.append('file', file);
@@ -138,17 +138,17 @@ export const ocrAPI = {
     });
   },
   
-  // ´ÓURLÊ¶±ğ
+  // ä»URLè¯†åˆ«
   extractTextFromUrl: (imageUrl, language = 'chi_sim+eng') => 
     api.post('/api/ocr/url', { image_url: imageUrl, language }),
   
-  // »ñÈ¡Ö§³ÖµÄÓïÑÔ
+  // è·å–æ”¯æŒçš„è¯­è¨€
   getLanguages: () => api.get('/api/ocr/languages'),
 };
 
-// AI·ÖÀàAPI
+// AIåˆ†ç±»API
 export const classifyAPI = {
-  // Í¼Æ¬·ÖÀà
+  // å›¾ç‰‡åˆ†ç±»
   classifyImage: (file) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -159,23 +159,23 @@ export const classifyAPI = {
     });
   },
   
-  // ´ÓURL·ÖÀà
+  // ä»URLåˆ†ç±»
   classifyImageFromUrl: (imageUrl) => 
     api.post('/api/classify/url', { image_url: imageUrl }),
   
-  // »ñÈ¡·ÖÀàĞÅÏ¢
+  // è·å–åˆ†ç±»ä¿¡æ¯
   getCategories: () => api.get('/api/classify/categories'),
   
-  // »ñÈ¡Ä£ĞÍĞÅÏ¢
+  // è·å–æ¨¡å‹ä¿¡æ¯
   getModelInfo: () => api.get('/api/classify/model-info'),
 };
 
-// Í¨ÓÃAPI
+// é€šç”¨API
 export const commonAPI = {
-  // »ñÈ¡·ÖÀàÁĞ±í
+  // è·å–åˆ†ç±»åˆ—è¡¨
   getCategories: () => api.get('/api/items/categories'),
   
-  // ½¡¿µ¼ì²é
+  // å¥åº·æ£€æŸ¥
   healthCheck: () => api.get('/health'),
 };
 

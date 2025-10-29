@@ -1,6 +1,6 @@
 """
-AIÎïÆ··ÖÀà¹¤¾ß
-Ê¹ÓÃÔ¤ÑµÁ·Ä£ĞÍ½øĞĞÎïÆ·Ê¶±ğºÍ·ÖÀà
+AIç‰©å“åˆ†ç±»å·¥å…·
+ä½¿ç”¨é¢„è®­ç»ƒæ¨¡å‹è¿›è¡Œç‰©å“è¯†åˆ«å’Œåˆ†ç±»
 """
 
 import torch
@@ -15,32 +15,32 @@ logger = logging.getLogger(__name__)
 
 
 class ItemClassifier:
-    """ÎïÆ··ÖÀàÆ÷"""
+    """ç‰©å“åˆ†ç±»å™¨"""
     
     def __init__(self):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = None
         self.categories = {
-            "phone": "ÊÖ»ú/ÊıÂë²úÆ·",
-            "wallet": "Ç®°ü/Ö¤¼ş",
-            "keys": "Ô¿³×/ÃÅ¿¨",
-            "book": "Êé¼®/ÎÄ¾ß",
-            "clothes": "ÒÂÎï/ÊÎÆ·",
-            "glasses": "ÑÛ¾µ/ÅäÊÎ",
-            "sports": "ÔË¶¯ÓÃÆ·",
-            "other": "ÆäËû"
+            "phone": "æ‰‹æœº/æ•°ç äº§å“",
+            "wallet": "é’±åŒ…/è¯ä»¶",
+            "keys": "é’¥åŒ™/é—¨å¡",
+            "book": "ä¹¦ç±/æ–‡å…·",
+            "clothes": "è¡£ç‰©/é¥°å“",
+            "glasses": "çœ¼é•œ/é…é¥°",
+            "sports": "è¿åŠ¨ç”¨å“",
+            "other": "å…¶ä»–"
         }
         self._load_model()
     
     def _load_model(self):
-        """¼ÓÔØÔ¤ÑµÁ·Ä£ĞÍ"""
+        """åŠ è½½é¢„è®­ç»ƒæ¨¡å‹"""
         try:
-            # Ê¹ÓÃResNet×÷Îª»ù´¡Ä£ĞÍ
+            # ä½¿ç”¨ResNetä½œä¸ºåŸºç¡€æ¨¡å‹
             self.model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
             self.model.eval()
             self.model.to(self.device)
             
-            # Í¼ÏñÔ¤´¦Àí
+            # å›¾åƒé¢„å¤„ç†
             self.transform = transforms.Compose([
                 transforms.Resize(256),
                 transforms.CenterCrop(224),
@@ -48,43 +48,43 @@ class ItemClassifier:
                 transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
             ])
             
-            logger.info("AI·ÖÀàÄ£ĞÍ¼ÓÔØ³É¹¦")
+            logger.info("AIåˆ†ç±»æ¨¡å‹åŠ è½½æˆåŠŸ")
             
         except Exception as e:
-            logger.error(f"Ä£ĞÍ¼ÓÔØÊ§°Ü: {str(e)}")
+            logger.error(f"æ¨¡å‹åŠ è½½å¤±è´¥: {str(e)}")
             self.model = None
     
     def classify_image(self, image_path: str) -> Tuple[str, float, List[str]]:
         """
-        ¶ÔÍ¼Æ¬½øĞĞÎïÆ··ÖÀà
+        å¯¹å›¾ç‰‡è¿›è¡Œç‰©å“åˆ†ç±»
         
         Args:
-            image_path: Í¼Æ¬Â·¾¶
+            image_path: å›¾ç‰‡è·¯å¾„
             
         Returns:
-            (Ö÷ÒªÀà±ğ, ÖÃĞÅ¶È, ËùÓĞ¿ÉÄÜµÄÀà±ğ)
+            (ä¸»è¦ç±»åˆ«, ç½®ä¿¡åº¦, æ‰€æœ‰å¯èƒ½çš„ç±»åˆ«)
         """
         if not self.model:
-            return "other", 0.0, ["ÆäËû"]
+            return "other", 0.0, ["å…¶ä»–"]
         
         try:
-            # ¼ÓÔØºÍÔ¤´¦ÀíÍ¼Æ¬
+            # åŠ è½½å’Œé¢„å¤„ç†å›¾ç‰‡
             image = Image.open(image_path).convert('RGB')
             input_tensor = self.transform(image).unsqueeze(0).to(self.device)
             
-            # ÍÆÀí
+            # æ¨ç†
             with torch.no_grad():
                 outputs = self.model(input_tensor)
                 probabilities = torch.nn.functional.softmax(outputs[0], dim=0)
             
-            # »ñÈ¡Ô¤²â½á¹û
+            # è·å–é¢„æµ‹ç»“æœ
             top5_prob, top5_indices = torch.topk(probabilities, 5)
             
-            # ½«ImageNetÀà±ğÓ³Éäµ½ÎÒÃÇµÄÀà±ğ
+            # å°†ImageNetç±»åˆ«æ˜ å°„åˆ°æˆ‘ä»¬çš„ç±»åˆ«
             predicted_category = self._map_imagenet_to_category(top5_indices[0].item())
             confidence = top5_prob[0].item()
             
-            # »ñÈ¡ËùÓĞ¿ÉÄÜµÄÀà±ğ
+            # è·å–æ‰€æœ‰å¯èƒ½çš„ç±»åˆ«
             all_categories = []
             for idx, prob in zip(top5_indices, top5_prob):
                 category = self._map_imagenet_to_category(idx.item())
@@ -93,44 +93,44 @@ class ItemClassifier:
             return predicted_category, confidence, all_categories
             
         except Exception as e:
-            logger.error(f"Í¼Æ¬·ÖÀàÊ§°Ü: {str(e)}")
-            return "other", 0.0, ["ÆäËû"]
+            logger.error(f"å›¾ç‰‡åˆ†ç±»å¤±è´¥: {str(e)}")
+            return "other", 0.0, ["å…¶ä»–"]
     
     def classify_image_from_url(self, image_url: str) -> Tuple[str, float, List[str]]:
         """
-        ´ÓURLÍ¼Æ¬½øĞĞÎïÆ··ÖÀà
+        ä»URLå›¾ç‰‡è¿›è¡Œç‰©å“åˆ†ç±»
         
         Args:
-            image_url: Í¼Æ¬URL
+            image_url: å›¾ç‰‡URL
             
         Returns:
-            (Ö÷ÒªÀà±ğ, ÖÃĞÅ¶È, ËùÓĞ¿ÉÄÜµÄÀà±ğ)
+            (ä¸»è¦ç±»åˆ«, ç½®ä¿¡åº¦, æ‰€æœ‰å¯èƒ½çš„ç±»åˆ«)
         """
         if not self.model:
-            return "other", 0.0, ["ÆäËû"]
+            return "other", 0.0, ["å…¶ä»–"]
         
         try:
-            # ÏÂÔØÍ¼Æ¬
+            # ä¸‹è½½å›¾ç‰‡
             response = requests.get(image_url)
             response.raise_for_status()
             
-            # ×ª»»ÎªPIL Image
+            # è½¬æ¢ä¸ºPIL Image
             image = Image.open(BytesIO(response.content)).convert('RGB')
             input_tensor = self.transform(image).unsqueeze(0).to(self.device)
             
-            # ÍÆÀí
+            # æ¨ç†
             with torch.no_grad():
                 outputs = self.model(input_tensor)
                 probabilities = torch.nn.functional.softmax(outputs[0], dim=0)
             
-            # »ñÈ¡Ô¤²â½á¹û
+            # è·å–é¢„æµ‹ç»“æœ
             top5_prob, top5_indices = torch.topk(probabilities, 5)
             
-            # Ó³ÉäÀà±ğ
+            # æ˜ å°„ç±»åˆ«
             predicted_category = self._map_imagenet_to_category(top5_indices[0].item())
             confidence = top5_prob[0].item()
             
-            # »ñÈ¡ËùÓĞ¿ÉÄÜµÄÀà±ğ
+            # è·å–æ‰€æœ‰å¯èƒ½çš„ç±»åˆ«
             all_categories = []
             for idx, prob in zip(top5_indices, top5_prob):
                 category = self._map_imagenet_to_category(idx.item())
@@ -139,62 +139,62 @@ class ItemClassifier:
             return predicted_category, confidence, all_categories
             
         except Exception as e:
-            logger.error(f"´ÓURL·ÖÀàÍ¼Æ¬Ê§°Ü: {str(e)}")
-            return "other", 0.0, ["ÆäËû"]
+            logger.error(f"ä»URLåˆ†ç±»å›¾ç‰‡å¤±è´¥: {str(e)}")
+            return "other", 0.0, ["å…¶ä»–"]
     
     def _map_imagenet_to_category(self, imagenet_class_id: int) -> str:
         """
-        ½«ImageNetÀà±ğIDÓ³Éäµ½ÎÒÃÇµÄÎïÆ·Àà±ğ
+        å°†ImageNetç±»åˆ«IDæ˜ å°„åˆ°æˆ‘ä»¬çš„ç‰©å“ç±»åˆ«
         
         Args:
-            imagenet_class_id: ImageNetÀà±ğID
+            imagenet_class_id: ImageNetç±»åˆ«ID
             
         Returns:
-            Ó³ÉäºóµÄÀà±ğÃû³Æ
+            æ˜ å°„åçš„ç±»åˆ«åç§°
         """
-        # ImageNetÀà±ğÓ³Éä¹æÔò£¨¼ò»¯°æ£©
+        # ImageNetç±»åˆ«æ˜ å°„è§„åˆ™ï¼ˆç®€åŒ–ç‰ˆï¼‰
         mapping_rules = {
-            # ÊÖ»ú/ÊıÂë²úÆ·
-            range(0, 100): "phone",      # ¸÷ÖÖµç×ÓÉè±¸
-            range(400, 500): "phone",    # ¼ÆËã»úÉè±¸
-            range(700, 800): "phone",    # µç×ÓÉè±¸
+            # æ‰‹æœº/æ•°ç äº§å“
+            range(0, 100): "phone",      # å„ç§ç”µå­è®¾å¤‡
+            range(400, 500): "phone",    # è®¡ç®—æœºè®¾å¤‡
+            range(700, 800): "phone",    # ç”µå­è®¾å¤‡
             
-            # Ç®°ü/Ö¤¼ş
-            range(200, 250): "wallet",   # Ç®°üÏà¹Ø
+            # é’±åŒ…/è¯ä»¶
+            range(200, 250): "wallet",   # é’±åŒ…ç›¸å…³
             
-            # Ô¿³×/ÃÅ¿¨
-            range(800, 850): "keys",     # ¹¤¾ßÀà
+            # é’¥åŒ™/é—¨å¡
+            range(800, 850): "keys",     # å·¥å…·ç±»
             
-            # Êé¼®/ÎÄ¾ß
-            range(600, 650): "book",     # Êé¼®ÎÄ¾ß
+            # ä¹¦ç±/æ–‡å…·
+            range(600, 650): "book",     # ä¹¦ç±æ–‡å…·
             
-            # ÒÂÎï/ÊÎÆ·
-            range(100, 200): "clothes",  # ·ş×°ÅäÊÎ
-            range(300, 350): "clothes",  # ·ş×°
+            # è¡£ç‰©/é¥°å“
+            range(100, 200): "clothes",  # æœè£…é…é¥°
+            range(300, 350): "clothes",  # æœè£…
             
-            # ÑÛ¾µ/ÅäÊÎ
-            range(350, 400): "glasses",  # ÑÛ¾µÅäÊÎ
+            # çœ¼é•œ/é…é¥°
+            range(350, 400): "glasses",  # çœ¼é•œé…é¥°
             
-            # ÔË¶¯ÓÃÆ·
-            range(500, 600): "sports",   # ÔË¶¯Æ÷²Ä
+            # è¿åŠ¨ç”¨å“
+            range(500, 600): "sports",   # è¿åŠ¨å™¨æ
             
-            # ÆäËû
+            # å…¶ä»–
         }
         
         for class_range, category in mapping_rules.items():
             if imagenet_class_id in class_range:
-                return self.categories.get(category, "ÆäËû")
+                return self.categories.get(category, "å…¶ä»–")
         
-        return "ÆäËû"
+        return "å…¶ä»–"
     
     def get_category_name(self, category_key: str) -> str:
-        """»ñÈ¡Àà±ğÖĞÎÄÃû³Æ"""
-        return self.categories.get(category_key, "ÆäËû")
+        """è·å–ç±»åˆ«ä¸­æ–‡åç§°"""
+        return self.categories.get(category_key, "å…¶ä»–")
     
     def get_all_categories(self) -> Dict[str, str]:
-        """»ñÈ¡ËùÓĞÀà±ğ"""
+        """è·å–æ‰€æœ‰ç±»åˆ«"""
         return self.categories.copy()
 
 
-# È«¾Ö·ÖÀàÆ÷ÊµÀı
+# å…¨å±€åˆ†ç±»å™¨å®ä¾‹
 item_classifier = ItemClassifier()

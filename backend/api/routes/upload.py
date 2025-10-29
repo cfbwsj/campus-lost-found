@@ -1,5 +1,5 @@
 """
-ÎÄ¼şÉÏ´«APIÂ·ÓÉ
+æ–‡ä»¶ä¸Šä¼ APIè·¯ç”±
 """
 
 from fastapi import APIRouter, HTTPException, UploadFile, File
@@ -12,40 +12,40 @@ from models.schemas import UploadResponse
 
 router = APIRouter()
 
-# ÔÊĞíµÄÎÄ¼şÀàĞÍ
+# å…è®¸çš„æ–‡ä»¶ç±»å‹
 ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 
 @router.post("/", response_model=UploadResponse)
 async def upload_file(file: UploadFile = File(...)):
-    """ÉÏ´«µ¥¸öÎÄ¼ş"""
+    """ä¸Šä¼ å•ä¸ªæ–‡ä»¶"""
     
-    # ÑéÖ¤ÎÄ¼ş´óĞ¡
+    # éªŒè¯æ–‡ä»¶å¤§å°
     if file.size > MAX_FILE_SIZE:
-        raise HTTPException(status_code=413, detail="ÎÄ¼ş´óĞ¡²»ÄÜ³¬¹ı10MB")
+        raise HTTPException(status_code=413, detail="æ–‡ä»¶å¤§å°ä¸èƒ½è¶…è¿‡10MB")
     
-    # ÑéÖ¤ÎÄ¼şÀàĞÍ
+    # éªŒè¯æ–‡ä»¶ç±»å‹
     file_extension = os.path.splitext(file.filename)[1].lower()
     if file_extension not in ALLOWED_EXTENSIONS:
-        raise HTTPException(status_code=400, detail="²»Ö§³ÖµÄÎÄ¼ş¸ñÊ½")
+        raise HTTPException(status_code=400, detail="ä¸æ”¯æŒçš„æ–‡ä»¶æ ¼å¼")
     
     try:
-        # Éú³ÉÎ¨Ò»ÎÄ¼şÃû
+        # ç”Ÿæˆå”¯ä¸€æ–‡ä»¶å
         unique_filename = f"{uuid.uuid4()}{file_extension}"
         
-        # ´´½¨ÉÏ´«Ä¿Â¼£¨°´ÈÕÆÚ·ÖÀà£©
+        # åˆ›å»ºä¸Šä¼ ç›®å½•ï¼ˆæŒ‰æ—¥æœŸåˆ†ç±»ï¼‰
         date_dir = datetime.now().strftime("%Y/%m/%d")
         upload_dir = os.path.join("uploads", "images", date_dir)
         os.makedirs(upload_dir, exist_ok=True)
         
-        # ±£´æÎÄ¼ş
+        # ä¿å­˜æ–‡ä»¶
         file_path = os.path.join(upload_dir, unique_filename)
         
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        # Éú³É·ÃÎÊURL
+        # ç”Ÿæˆè®¿é—®URL
         file_url = f"/uploads/images/{date_dir}/{unique_filename}"
         
         return UploadResponse(
@@ -56,52 +56,52 @@ async def upload_file(file: UploadFile = File(...)):
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"ÎÄ¼şÉÏ´«Ê§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"æ–‡ä»¶ä¸Šä¼ å¤±è´¥: {str(e)}")
 
 
 @router.post("/multiple", response_model=List[UploadResponse])
 async def upload_multiple_files(files: List[UploadFile] = File(...)):
-    """ÉÏ´«¶à¸öÎÄ¼ş"""
+    """ä¸Šä¼ å¤šä¸ªæ–‡ä»¶"""
     
     if len(files) > 5:
-        raise HTTPException(status_code=400, detail="×î¶àÖ»ÄÜÉÏ´«5¸öÎÄ¼ş")
+        raise HTTPException(status_code=400, detail="æœ€å¤šåªèƒ½ä¸Šä¼ 5ä¸ªæ–‡ä»¶")
     
     results = []
     
     for file in files:
         try:
-            # ÑéÖ¤ÎÄ¼ş´óĞ¡
+            # éªŒè¯æ–‡ä»¶å¤§å°
             if file.size > MAX_FILE_SIZE:
                 results.append({
-                    "error": f"ÎÄ¼ş {file.filename} ´óĞ¡³¬¹ıÏŞÖÆ",
+                    "error": f"æ–‡ä»¶ {file.filename} å¤§å°è¶…è¿‡é™åˆ¶",
                     "filename": file.filename
                 })
                 continue
             
-            # ÑéÖ¤ÎÄ¼şÀàĞÍ
+            # éªŒè¯æ–‡ä»¶ç±»å‹
             file_extension = os.path.splitext(file.filename)[1].lower()
             if file_extension not in ALLOWED_EXTENSIONS:
                 results.append({
-                    "error": f"ÎÄ¼ş {file.filename} ¸ñÊ½²»Ö§³Ö",
+                    "error": f"æ–‡ä»¶ {file.filename} æ ¼å¼ä¸æ”¯æŒ",
                     "filename": file.filename
                 })
                 continue
             
-            # Éú³ÉÎ¨Ò»ÎÄ¼şÃû
+            # ç”Ÿæˆå”¯ä¸€æ–‡ä»¶å
             unique_filename = f"{uuid.uuid4()}{file_extension}"
             
-            # ´´½¨ÉÏ´«Ä¿Â¼
+            # åˆ›å»ºä¸Šä¼ ç›®å½•
             date_dir = datetime.now().strftime("%Y/%m/%d")
             upload_dir = os.path.join("uploads", "images", date_dir)
             os.makedirs(upload_dir, exist_ok=True)
             
-            # ±£´æÎÄ¼ş
+            # ä¿å­˜æ–‡ä»¶
             file_path = os.path.join(upload_dir, unique_filename)
             
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(file.file, buffer)
             
-            # Éú³É·ÃÎÊURL
+            # ç”Ÿæˆè®¿é—®URL
             file_url = f"/uploads/images/{date_dir}/{unique_filename}"
             
             results.append(UploadResponse(
@@ -113,7 +113,7 @@ async def upload_multiple_files(files: List[UploadFile] = File(...)):
             
         except Exception as e:
             results.append({
-                "error": f"ÎÄ¼ş {file.filename} ÉÏ´«Ê§°Ü: {str(e)}",
+                "error": f"æ–‡ä»¶ {file.filename} ä¸Šä¼ å¤±è´¥: {str(e)}",
                 "filename": file.filename
             })
     
@@ -122,26 +122,26 @@ async def upload_multiple_files(files: List[UploadFile] = File(...)):
 
 @router.delete("/{filename}")
 async def delete_file(filename: str):
-    """É¾³ıÉÏ´«µÄÎÄ¼ş"""
+    """åˆ é™¤ä¸Šä¼ çš„æ–‡ä»¶"""
     
     try:
-        # ²éÕÒÎÄ¼ş
+        # æŸ¥æ‰¾æ–‡ä»¶
         upload_dir = "uploads/images"
         for root, dirs, files in os.walk(upload_dir):
             if filename in files:
                 file_path = os.path.join(root, filename)
                 os.remove(file_path)
-                return {"message": "ÎÄ¼şÉ¾³ı³É¹¦"}
+                return {"message": "æ–‡ä»¶åˆ é™¤æˆåŠŸ"}
         
-        raise HTTPException(status_code=404, detail="ÎÄ¼ş²»´æÔÚ")
+        raise HTTPException(status_code=404, detail="æ–‡ä»¶ä¸å­˜åœ¨")
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"ÎÄ¼şÉ¾³ıÊ§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"æ–‡ä»¶åˆ é™¤å¤±è´¥: {str(e)}")
 
 
 @router.get("/info")
 async def get_upload_info():
-    """»ñÈ¡ÉÏ´«ĞÅÏ¢"""
+    """è·å–ä¸Šä¼ ä¿¡æ¯"""
     return {
         "max_file_size": MAX_FILE_SIZE,
         "allowed_extensions": list(ALLOWED_EXTENSIONS),

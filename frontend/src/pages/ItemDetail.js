@@ -51,8 +51,8 @@ const ItemDetail = () => {
       }
       setItem(result);
     } catch (error) {
-      console.error('¼ÓÔØÎïÆ·ÏêÇéÊ§°Ü:', error);
-      message.error('¼ÓÔØÏêÇéÊ§°Ü');
+      console.error('åŠ è½½ç‰©å“è¯¦æƒ…å¤±è´¥:', error);
+      message.error('åŠ è½½è¯¦æƒ…å¤±è´¥');
     } finally {
       setLoading(false);
     }
@@ -65,23 +65,23 @@ const ItemDetail = () => {
       } else {
         await foundItemsAPI.deleteFoundItem(id);
       }
-      message.success('É¾³ı³É¹¦');
+      message.success('åˆ é™¤æˆåŠŸ');
       navigate(type === 'lost' ? '/lost' : '/found');
     } catch (error) {
-      console.error('É¾³ıÊ§°Ü:', error);
-      message.error('É¾³ıÊ§°Ü');
+      console.error('åˆ é™¤å¤±è´¥:', error);
+      message.error('åˆ é™¤å¤±è´¥');
     }
     setDeleteModalVisible(false);
   };
 
   const getStatusTag = (status) => {
     const statusMap = {
-      lost: { color: 'orange', text: '¶ªÊ§ÖĞ' },
-      found: { color: 'green', text: 'ÕĞÁìÖĞ' },
-      claimed: { color: 'default', text: 'ÒÑÈÏÁì' }
+      lost: { color: 'orange', text: 'ä¸¢å¤±ä¸­' },
+      found: { color: 'green', text: 'æ‹›é¢†ä¸­' },
+      claimed: { color: 'default', text: 'å·²è®¤é¢†' }
     };
     
-    const statusInfo = statusMap[status] || { color: 'default', text: 'Î´Öª' };
+    const statusInfo = statusMap[status] || { color: 'default', text: 'æœªçŸ¥' };
     return <Tag color={statusInfo.color}>{statusInfo.text}</Tag>;
   };
 
@@ -102,7 +102,7 @@ const ItemDetail = () => {
   if (!item) {
     return (
       <div className="page-container">
-        <Empty description="ÎïÆ·ĞÅÏ¢²»´æÔÚ" />
+        <Empty description="ç‰©å“ä¿¡æ¯ä¸å­˜åœ¨" />
       </div>
     );
   }
@@ -124,14 +124,14 @@ const ItemDetail = () => {
                 icon={<EditOutlined />}
                 onClick={() => navigate(`/edit/${type}/${id}`)}
               >
-                ±à¼­
+                ç¼–è¾‘
               </Button>
               <Button 
                 danger 
                 icon={<DeleteOutlined />}
                 onClick={() => setDeleteModalVisible(true)}
               >
-                É¾³ı
+                åˆ é™¤
               </Button>
             </Space>
           </Col>
@@ -140,10 +140,10 @@ const ItemDetail = () => {
 
       <div className="page-content">
         <Row gutter={[24, 24]}>
-          {/* ×ó²à£ºÍ¼Æ¬ºÍĞÅÏ¢ */}
+          {/* å·¦ä¾§ï¼šå›¾ç‰‡å’Œä¿¡æ¯ */}
           <Col xs={24} lg={16}>
-            {/* Í¼Æ¬Õ¹Ê¾ */}
-            <Card title="ÎïÆ·Í¼Æ¬" style={{ marginBottom: 24 }}>
+            {/* å›¾ç‰‡å±•ç¤º */}
+            <Card title="ç‰©å“å›¾ç‰‡" style={{ marginBottom: 24 }}>
               {item.image_url ? (
                 <Image
                   src={item.image_url}
@@ -158,23 +158,23 @@ const ItemDetail = () => {
                   background: '#f5f5f5',
                   borderRadius: '6px'
                 }}>
-                  <Text type="secondary">ÔİÎŞÍ¼Æ¬</Text>
+                  <Text type="secondary">æš‚æ— å›¾ç‰‡</Text>
                 </div>
               )}
             </Card>
 
-            {/* ÏêÏ¸ĞÅÏ¢ */}
-            <Card title="ÏêÏ¸ĞÅÏ¢">
+            {/* è¯¦ç»†ä¿¡æ¯ */}
+            <Card title="è¯¦ç»†ä¿¡æ¯">
               <Space direction="vertical" size="large" style={{ width: '100%' }}>
                 <div>
-                  <Title level={4}>ÎïÆ·ÃèÊö</Title>
-                  <Paragraph>{item.description || 'ÔİÎŞÃèÊö'}</Paragraph>
+                  <Title level={4}>ç‰©å“æè¿°</Title>
+                  <Paragraph>{item.description || 'æš‚æ— æè¿°'}</Paragraph>
                 </div>
 
                 {item.location && (
                   <div>
                     <Title level={4}>
-                      <EnvironmentOutlined /> ·¢ÏÖµØµã
+                      <EnvironmentOutlined /> å‘ç°åœ°ç‚¹
                     </Title>
                     <Text>{item.location}</Text>
                   </div>
@@ -183,7 +183,7 @@ const ItemDetail = () => {
                 {item.contact_info && (
                   <div>
                     <Title level={4}>
-                      <PhoneOutlined /> ÁªÏµ·½Ê½
+                      <PhoneOutlined /> è”ç³»æ–¹å¼
                     </Title>
                     <Text copyable>{item.contact_info}</Text>
                   </div>
@@ -191,7 +191,7 @@ const ItemDetail = () => {
 
                 <div>
                   <Title level={4}>
-                    <ClockCircleOutlined /> ·¢²¼Ê±¼ä
+                    <ClockCircleOutlined /> å‘å¸ƒæ—¶é—´
                   </Title>
                   <Text>{formatDate(item.created_at)}</Text>
                 </div>
@@ -199,15 +199,15 @@ const ItemDetail = () => {
             </Card>
           </Col>
 
-          {/* ÓÒ²à£ºAI·ÖÎö½á¹û */}
+          {/* å³ä¾§ï¼šAIåˆ†æç»“æœ */}
           <Col xs={24} lg={8}>
-            {/* OCRÊ¶±ğ½á¹û */}
+            {/* OCRè¯†åˆ«ç»“æœ */}
             {item.ocr_text && (
               <Card 
                 title={
                   <Space>
                     <FileTextOutlined />
-                    OCRÊ¶±ğ½á¹û
+                    OCRè¯†åˆ«ç»“æœ
                   </Space>
                 }
                 style={{ marginBottom: 24 }}
@@ -220,16 +220,16 @@ const ItemDetail = () => {
               </Card>
             )}
 
-            {/* AI·ÖÀà½á¹û */}
+            {/* AIåˆ†ç±»ç»“æœ */}
             {item.ai_category && (
               <Card 
                 title={
                   <Space>
                     <RobotOutlined />
-                    AIÎïÆ··ÖÀà
+                    AIç‰©å“åˆ†ç±»
                     {item.confidence && (
                       <Tag color="blue">
-                        ÖÃĞÅ¶È: {(item.confidence * 100).toFixed(1)}%
+                        ç½®ä¿¡åº¦: {(item.confidence * 100).toFixed(1)}%
                       </Tag>
                     )}
                   </Space>
@@ -237,27 +237,27 @@ const ItemDetail = () => {
                 style={{ marginBottom: 24 }}
               >
                 <div className="ai-classification">
-                  <Title level={4}>Ê¶±ğÀà±ğ£º{item.ai_category}</Title>
+                  <Title level={4}>è¯†åˆ«ç±»åˆ«ï¼š{item.ai_category}</Title>
                   <Paragraph>
-                    AIÄ£ĞÍ×Ô¶¯Ê¶±ğµÄÎïÆ·Àà±ğ£¬¿ÉÓÃÓÚ¸¨Öú·ÖÀàºÍËÑË÷
+                    AIæ¨¡å‹è‡ªåŠ¨è¯†åˆ«çš„ç‰©å“ç±»åˆ«ï¼Œå¯ç”¨äºè¾…åŠ©åˆ†ç±»å’Œæœç´¢
                   </Paragraph>
                 </div>
               </Card>
             )}
 
-            {/* ÁªÏµ¿¨Æ¬ */}
-            <Card title="ÁªÏµĞÅÏ¢" style={{ marginBottom: 24 }}>
+            {/* è”ç³»å¡ç‰‡ */}
+            <Card title="è”ç³»ä¿¡æ¯" style={{ marginBottom: 24 }}>
               <Space direction="vertical" style={{ width: '100%' }}>
                 <div>
-                  <Text strong>ÁªÏµ·½Ê½£º</Text>
+                  <Text strong>è”ç³»æ–¹å¼ï¼š</Text>
                   <br />
-                  <Text copyable>{item.contact_info || 'Î´Ìá¹©'}</Text>
+                  <Text copyable>{item.contact_info || 'æœªæä¾›'}</Text>
                 </div>
                 
                 <Divider />
                 
                 <div>
-                  <Text strong>ÎïÆ·×´Ì¬£º</Text>
+                  <Text strong>ç‰©å“çŠ¶æ€ï¼š</Text>
                   <br />
                   {getStatusTag(item.status)}
                 </div>
@@ -270,14 +270,14 @@ const ItemDetail = () => {
                   block
                   onClick={() => {
                     if (item.contact_info) {
-                      // ÕâÀï¿ÉÒÔÌí¼ÓÁªÏµ¹¦ÄÜ
-                      message.success('ÇëÁªÏµ·¢²¼ÕßÈ·ÈÏÎïÆ·ĞÅÏ¢');
+                      // è¿™é‡Œå¯ä»¥æ·»åŠ è”ç³»åŠŸèƒ½
+                      message.success('è¯·è”ç³»å‘å¸ƒè€…ç¡®è®¤ç‰©å“ä¿¡æ¯');
                     } else {
-                      message.warning('·¢²¼ÕßÎ´Ìá¹©ÁªÏµ·½Ê½');
+                      message.warning('å‘å¸ƒè€…æœªæä¾›è”ç³»æ–¹å¼');
                     }
                   }}
                 >
-                  <UserOutlined /> ÁªÏµ·¢²¼Õß
+                  <UserOutlined /> è”ç³»å‘å¸ƒè€…
                 </Button>
               </Space>
             </Card>
@@ -285,18 +285,18 @@ const ItemDetail = () => {
         </Row>
       </div>
 
-      {/* É¾³ıÈ·ÈÏÄ£Ì¬¿ò */}
+      {/* åˆ é™¤ç¡®è®¤æ¨¡æ€æ¡† */}
       <Modal
-        title="È·ÈÏÉ¾³ı"
+        title="ç¡®è®¤åˆ é™¤"
         open={deleteModalVisible}
         onOk={handleDelete}
         onCancel={() => setDeleteModalVisible(false)}
-        okText="È·ÈÏÉ¾³ı"
-        cancelText="È¡Ïû"
+        okText="ç¡®è®¤åˆ é™¤"
+        cancelText="å–æ¶ˆ"
         okButtonProps={{ danger: true }}
       >
-        <p>ÄúÈ·¶¨ÒªÉ¾³ıÕâ¸ö{item.type === 'lost' ? 'Ê§Îï' : 'ÕĞÁì'}ĞÅÏ¢Âğ£¿</p>
-        <p style={{ color: '#ff4d4f' }}>´Ë²Ù×÷²»¿É»Ö¸´£¡</p>
+        <p>æ‚¨ç¡®å®šè¦åˆ é™¤è¿™ä¸ª{item.type === 'lost' ? 'å¤±ç‰©' : 'æ‹›é¢†'}ä¿¡æ¯å—ï¼Ÿ</p>
+        <p style={{ color: '#ff4d4f' }}>æ­¤æ“ä½œä¸å¯æ¢å¤ï¼</p>
       </Modal>
     </div>
   );

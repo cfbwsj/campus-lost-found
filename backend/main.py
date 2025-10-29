@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 """
-校园失物招领系统 - 主应用入口
+Campus Lost & Found System - Main Application Entry
 """
 
 from fastapi import FastAPI, HTTPException
@@ -15,25 +16,25 @@ from models.database import init_db
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """应用生命周期管理"""
-    # 启动时执行
+    """Application lifecycle management"""
+    # Execute on startup
     init_db()
-    # 创建上传目录
+    # Create upload directories
     os.makedirs("uploads", exist_ok=True)
     os.makedirs("uploads/images", exist_ok=True)
     yield
-    # 关闭时执行
+    # Execute on shutdown
 
 
-# 创建FastAPI应用
+# Create FastAPI application
 app = FastAPI(
-    title="校园失物招领系统",
-    description="基于AI技术的智能校园失物招领平台",
+    title="Campus Lost & Found System",
+    description="AI-powered campus lost and found platform",
     version="1.0.0",
     lifespan=lifespan
 )
 
-# 配置CORS
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
@@ -42,22 +43,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 静态文件服务
+# Static file service
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-# 注册路由
-app.include_router(items.router, prefix="/api/items", tags=["失物管理"])
-app.include_router(search.router, prefix="/api/search", tags=["搜索功能"])
-app.include_router(upload.router, prefix="/api/upload", tags=["文件上传"])
-app.include_router(ocr.router, prefix="/api/ocr", tags=["OCR识别"])
-app.include_router(classify.router, prefix="/api/classify", tags=["AI分类"])
+# Register routes
+app.include_router(items.router, prefix="/api/items", tags=["Lost Items Management"])
+app.include_router(search.router, prefix="/api/search", tags=["Search Functions"])
+app.include_router(upload.router, prefix="/api/upload", tags=["File Upload"])
+app.include_router(ocr.router, prefix="/api/ocr", tags=["OCR Recognition"])
+app.include_router(classify.router, prefix="/api/classify", tags=["AI Classification"])
 
 
 @app.get("/")
 async def root():
-    """根路径"""
+    """Root endpoint"""
     return {
-        "message": "校园失物招领系统API",
+        "message": "Campus Lost & Found System API",
         "version": "1.0.0",
         "docs": "/docs",
         "redoc": "/redoc"
@@ -66,8 +67,8 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    """健康检查"""
-    return {"status": "healthy", "message": "服务运行正常"}
+    """Health check"""
+    return {"status": "healthy", "message": "Service is running normally"}
 
 
 if __name__ == "__main__":

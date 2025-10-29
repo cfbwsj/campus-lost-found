@@ -1,5 +1,5 @@
 """
-OCRÊ¶±ğAPIÂ·ÓÉ
+OCRè¯†åˆ«APIè·¯ç”±
 """
 
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
@@ -17,14 +17,14 @@ async def extract_text_from_image(
     file: UploadFile = File(...),
     language: str = Form("chi_sim+eng")
 ):
-    """´ÓÉÏ´«µÄÍ¼Æ¬ÖĞÌáÈ¡ÎÄ×Ö"""
+    """ä»ä¸Šä¼ çš„å›¾ç‰‡ä¸­æå–æ–‡å­—"""
     
-    # ÑéÖ¤ÎÄ¼şÀàĞÍ
+    # éªŒè¯æ–‡ä»¶ç±»å‹
     if not file.content_type.startswith('image/'):
-        raise HTTPException(status_code=400, detail="ÎÄ¼ş±ØĞëÊÇÍ¼Æ¬¸ñÊ½")
+        raise HTTPException(status_code=400, detail="æ–‡ä»¶å¿…é¡»æ˜¯å›¾ç‰‡æ ¼å¼")
     
     try:
-        # ±£´æÉÏ´«µÄÎÄ¼ş
+        # ä¿å­˜ä¸Šä¼ çš„æ–‡ä»¶
         upload_dir = "uploads/ocr"
         os.makedirs(upload_dir, exist_ok=True)
         
@@ -33,10 +33,10 @@ async def extract_text_from_image(
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        # OCRÊ¶±ğ
+        # OCRè¯†åˆ«
         text, confidence = ocr_processor.extract_text(file_path, language)
         
-        # É¾³ıÁÙÊ±ÎÄ¼ş
+        # åˆ é™¤ä¸´æ—¶æ–‡ä»¶
         os.remove(file_path)
         
         return OCRResponse(
@@ -46,7 +46,7 @@ async def extract_text_from_image(
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"OCRÊ¶±ğÊ§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"OCRè¯†åˆ«å¤±è´¥: {str(e)}")
 
 
 @router.post("/url", response_model=OCRResponse)
@@ -54,10 +54,10 @@ async def extract_text_from_url(
     image_url: str,
     language: str = "chi_sim+eng"
 ):
-    """´ÓURLÍ¼Æ¬ÖĞÌáÈ¡ÎÄ×Ö"""
+    """ä»URLå›¾ç‰‡ä¸­æå–æ–‡å­—"""
     
     try:
-        # OCRÊ¶±ğ
+        # OCRè¯†åˆ«
         text, confidence = ocr_processor.extract_text_from_url(image_url, language)
         
         return OCRResponse(
@@ -67,17 +67,17 @@ async def extract_text_from_url(
         )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"OCRÊ¶±ğÊ§°Ü: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"OCRè¯†åˆ«å¤±è´¥: {str(e)}")
 
 
 @router.get("/languages")
 async def get_supported_languages():
-    """»ñÈ¡Ö§³ÖµÄOCRÓïÑÔÁĞ±í"""
+    """è·å–æ”¯æŒçš„OCRè¯­è¨€åˆ—è¡¨"""
     languages = {
-        "chi_sim": "¼òÌåÖĞÎÄ",
-        "chi_tra": "·±ÌåÖĞÎÄ",
-        "eng": "Ó¢ÎÄ",
-        "chi_sim+eng": "¼òÌåÖĞÎÄ+Ó¢ÎÄ",
-        "chi_tra+eng": "·±ÌåÖĞÎÄ+Ó¢ÎÄ"
+        "chi_sim": "ç®€ä½“ä¸­æ–‡",
+        "chi_tra": "ç¹ä½“ä¸­æ–‡",
+        "eng": "è‹±æ–‡",
+        "chi_sim+eng": "ç®€ä½“ä¸­æ–‡+è‹±æ–‡",
+        "chi_tra+eng": "ç¹ä½“ä¸­æ–‡+è‹±æ–‡"
     }
     return {"languages": languages}

@@ -1,5 +1,5 @@
 """
-Ê§Îï¹ÜÀíAPIÂ·ÓÉ
+å¤±ç‰©ç®¡ç†APIè·¯ç”±
 """
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -13,7 +13,7 @@ router = APIRouter()
 
 @router.post("/lost", response_model=LostItem)
 async def create_lost_item(item: ItemCreate, db: Session = Depends(get_db)):
-    """·¢²¼Ê§ÎïĞÅÏ¢"""
+    """å‘å¸ƒå¤±ç‰©ä¿¡æ¯"""
     db_item = DBLostItem(**item.dict())
     db.add(db_item)
     db.commit()
@@ -23,7 +23,7 @@ async def create_lost_item(item: ItemCreate, db: Session = Depends(get_db)):
 
 @router.post("/found", response_model=FoundItem)
 async def create_found_item(item: ItemCreate, db: Session = Depends(get_db)):
-    """·¢²¼ÕĞÁìĞÅÏ¢"""
+    """å‘å¸ƒæ‹›é¢†ä¿¡æ¯"""
     db_item = DBFoundItem(**item.dict())
     db.add(db_item)
     db.commit()
@@ -39,7 +39,7 @@ async def get_lost_items(
     status: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
-    """»ñÈ¡Ê§ÎïÁĞ±í"""
+    """è·å–å¤±ç‰©åˆ—è¡¨"""
     query = db.query(DBLostItem).filter(DBLostItem.is_active == True)
     
     if category:
@@ -59,7 +59,7 @@ async def get_found_items(
     status: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
-    """»ñÈ¡ÕĞÁìÁĞ±í"""
+    """è·å–æ‹›é¢†åˆ—è¡¨"""
     query = db.query(DBFoundItem).filter(DBFoundItem.is_active == True)
     
     if category:
@@ -73,28 +73,28 @@ async def get_found_items(
 
 @router.get("/lost/{item_id}", response_model=ItemResponse)
 async def get_lost_item(item_id: int, db: Session = Depends(get_db)):
-    """»ñÈ¡Ê§ÎïÏêÇé"""
+    """è·å–å¤±ç‰©è¯¦æƒ…"""
     item = db.query(DBLostItem).filter(
         DBLostItem.id == item_id,
         DBLostItem.is_active == True
     ).first()
     
     if not item:
-        raise HTTPException(status_code=404, detail="Ê§ÎïĞÅÏ¢²»´æÔÚ")
+        raise HTTPException(status_code=404, detail="å¤±ç‰©ä¿¡æ¯ä¸å­˜åœ¨")
     
     return item
 
 
 @router.get("/found/{item_id}", response_model=ItemResponse)
 async def get_found_item(item_id: int, db: Session = Depends(get_db)):
-    """»ñÈ¡ÕĞÁìÏêÇé"""
+    """è·å–æ‹›é¢†è¯¦æƒ…"""
     item = db.query(DBFoundItem).filter(
         DBFoundItem.id == item_id,
         DBFoundItem.is_active == True
     ).first()
     
     if not item:
-        raise HTTPException(status_code=404, detail="ÕĞÁìĞÅÏ¢²»´æÔÚ")
+        raise HTTPException(status_code=404, detail="æ‹›é¢†ä¿¡æ¯ä¸å­˜åœ¨")
     
     return item
 
@@ -105,11 +105,11 @@ async def update_lost_item(
     item_update: ItemUpdate,
     db: Session = Depends(get_db)
 ):
-    """¸üĞÂÊ§ÎïĞÅÏ¢"""
+    """æ›´æ–°å¤±ç‰©ä¿¡æ¯"""
     db_item = db.query(DBLostItem).filter(DBLostItem.id == item_id).first()
     
     if not db_item:
-        raise HTTPException(status_code=404, detail="Ê§ÎïĞÅÏ¢²»´æÔÚ")
+        raise HTTPException(status_code=404, detail="å¤±ç‰©ä¿¡æ¯ä¸å­˜åœ¨")
     
     update_data = item_update.dict(exclude_unset=True)
     for field, value in update_data.items():
@@ -126,11 +126,11 @@ async def update_found_item(
     item_update: ItemUpdate,
     db: Session = Depends(get_db)
 ):
-    """¸üĞÂÕĞÁìĞÅÏ¢"""
+    """æ›´æ–°æ‹›é¢†ä¿¡æ¯"""
     db_item = db.query(DBFoundItem).filter(DBFoundItem.id == item_id).first()
     
     if not db_item:
-        raise HTTPException(status_code=404, detail="ÕĞÁìĞÅÏ¢²»´æÔÚ")
+        raise HTTPException(status_code=404, detail="æ‹›é¢†ä¿¡æ¯ä¸å­˜åœ¨")
     
     update_data = item_update.dict(exclude_unset=True)
     for field, value in update_data.items():
@@ -143,41 +143,41 @@ async def update_found_item(
 
 @router.delete("/lost/{item_id}")
 async def delete_lost_item(item_id: int, db: Session = Depends(get_db)):
-    """É¾³ıÊ§ÎïĞÅÏ¢"""
+    """åˆ é™¤å¤±ç‰©ä¿¡æ¯"""
     db_item = db.query(DBLostItem).filter(DBLostItem.id == item_id).first()
     
     if not db_item:
-        raise HTTPException(status_code=404, detail="Ê§ÎïĞÅÏ¢²»´æÔÚ")
+        raise HTTPException(status_code=404, detail="å¤±ç‰©ä¿¡æ¯ä¸å­˜åœ¨")
     
     db_item.is_active = False
     db.commit()
-    return {"message": "Ê§ÎïĞÅÏ¢ÒÑÉ¾³ı"}
+    return {"message": "å¤±ç‰©ä¿¡æ¯å·²åˆ é™¤"}
 
 
 @router.delete("/found/{item_id}")
 async def delete_found_item(item_id: int, db: Session = Depends(get_db)):
-    """É¾³ıÕĞÁìĞÅÏ¢"""
+    """åˆ é™¤æ‹›é¢†ä¿¡æ¯"""
     db_item = db.query(DBFoundItem).filter(DBFoundItem.id == item_id).first()
     
     if not db_item:
-        raise HTTPException(status_code=404, detail="ÕĞÁìĞÅÏ¢²»´æÔÚ")
+        raise HTTPException(status_code=404, detail="æ‹›é¢†ä¿¡æ¯ä¸å­˜åœ¨")
     
     db_item.is_active = False
     db.commit()
-    return {"message": "ÕĞÁìĞÅÏ¢ÒÑÉ¾³ı"}
+    return {"message": "æ‹›é¢†ä¿¡æ¯å·²åˆ é™¤"}
 
 
 @router.get("/categories")
 async def get_categories():
-    """»ñÈ¡ÎïÆ··ÖÀàÁĞ±í"""
+    """è·å–ç‰©å“åˆ†ç±»åˆ—è¡¨"""
     categories = [
-        "ÊÖ»ú/ÊıÂë²úÆ·",
-        "Ç®°ü/Ö¤¼ş",
-        "Ô¿³×/ÃÅ¿¨",
-        "Êé¼®/ÎÄ¾ß",
-        "ÒÂÎï/ÊÎÆ·",
-        "ÑÛ¾µ/ÅäÊÎ",
-        "ÔË¶¯ÓÃÆ·",
-        "ÆäËû"
+        "æ‰‹æœº/æ•°ç äº§å“",
+        "é’±åŒ…/è¯ä»¶",
+        "é’¥åŒ™/é—¨å¡",
+        "ä¹¦ç±/æ–‡å…·",
+        "è¡£ç‰©/é¥°å“",
+        "çœ¼é•œ/é…é¥°",
+        "è¿åŠ¨ç”¨å“",
+        "å…¶ä»–"
     ]
     return {"categories": categories}
