@@ -156,7 +156,7 @@ const SearchPage = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1> 智能搜索</h1>
+        <h1>智能搜索</h1>
         <p>支持模糊匹配、分类筛选和地点搜索</p>
       </div>
 

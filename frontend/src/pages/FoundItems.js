@@ -91,7 +91,7 @@ const FoundItems = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1> 招领信息</h1>
+        <h1>招领信息</h1>
         <p>查看所有招领信息，寻找您丢失的物品</p>
       </div>
 

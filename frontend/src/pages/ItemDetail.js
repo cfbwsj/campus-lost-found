@@ -239,7 +239,7 @@ const ItemDetail = () => {
                 <div className="ai-classification">
                   <Title level={4}>识别类别：{item.ai_category}</Title>
                   <Paragraph>
-                    AI模型自动识别的物品类别，可用于辅助分类和搜索
+                  AI模型自动识别的物品类别，可用于辅助分类和搜索
                   </Paragraph>
                 </div>
               </Card>

@@ -94,7 +94,7 @@ const LostItems = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1> 失物信息</h1>
+        <h1>失物信息</h1>
         <p>查看所有失物信息，帮助找回丢失的物品</p>
       </div>
 

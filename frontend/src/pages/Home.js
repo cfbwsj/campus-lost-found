@@ -108,10 +108,10 @@ const Home = () => {
           <Col xs={24} md={16} lg={12}>
             <div style={{ textAlign: 'center' }}>
               <Title level={1} style={{ marginBottom: 16 }}>
-                 校园失物招领系统
+                校园失物招领系统
               </Title>
               <Paragraph style={{ fontSize: '16px', color: '#666', marginBottom: 32 }}>
-                基于AI技术的智能失物招领平台，支持OCR识别、智能分类和模糊搜索
+              基于AI技术的智能失物招领平台，支持OCR识别、智能分类和模糊搜索
               </Paragraph>
               
               <Search
