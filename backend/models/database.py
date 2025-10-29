@@ -8,8 +8,11 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import os
 
-# 数据库配置 - MySQL
-DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://root:password@localhost:3306/aiweb?charset=utf8mb4")
+# 数据库配置 - 支持PostgreSQL和MySQL
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:password@localhost:5432/campus_db")
+# 如果URL以postgres://开头，替换为postgresql://（Render兼容性）
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 # 创建数据库引擎
 engine = create_engine(DATABASE_URL)
