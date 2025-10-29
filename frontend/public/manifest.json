@@ -1,0 +1,10 @@
+{
+  "short_name": "失物招领",
+  "name": "校园失物招领系统",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
+
