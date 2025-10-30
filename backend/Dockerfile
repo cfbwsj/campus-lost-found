@@ -1,8 +1,12 @@
 # Use Python 3.9 official image
-FROM hub-mirror.c.163.com/library/python:3.9-slim
+FROM python:3.9-slim
 
 # Set working directory
 WORKDIR /app
+
+# Use Aliyun mirror for apt
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list && \
+    sed -i 's|security.debian.org/debian-security|mirrors.aliyun.com/debian-security|g' /etc/apt/sources.list
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -22,8 +26,8 @@ RUN apt-get update && apt-get install -y \
 # Copy requirements file
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies using Tsinghua mirror
+RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Copy application code
 COPY . .

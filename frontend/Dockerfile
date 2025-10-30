@@ -4,6 +4,9 @@ FROM node:16-alpine as build
 # Set working directory
 WORKDIR /app
 
+# Use Taobao npm mirror
+RUN npm config set registry https://registry.npmmirror.com
+
 # Copy package files
 COPY package*.json ./
 
