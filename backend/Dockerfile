@@ -4,9 +4,11 @@ FROM python:3.9-slim
 # Set working directory
 WORKDIR /app
 
-# Use Aliyun mirror for apt
-RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list && \
-    sed -i 's|security.debian.org/debian-security|mirrors.aliyun.com/debian-security|g' /etc/apt/sources.list
+# Use Aliyun mirror for apt (replace sources before apt-get)
+RUN if [ -f /etc/apt/sources.list ]; then \
+        sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list && \
+        sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list; \
+    fi
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
