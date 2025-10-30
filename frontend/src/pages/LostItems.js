@@ -152,10 +152,11 @@ const LostItems = () => {
                     cover={
                       <img
                         alt={item.title}
-                        src={item.image_url || '/placeholder.png'}
+                        src={item.image_url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBix5s6CwAAAAASUVORK5CYII='}
                         className="item-image"
                         onError={(e) => {
-                          e.target.src = '/placeholder.png';
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBix5s6CwAAAAASUVORK5CYII=';
                         }}
                       />
                     }

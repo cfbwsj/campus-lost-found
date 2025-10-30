@@ -165,7 +165,7 @@ const ItemDetail = () => {
                   src={item.image_url}
                   alt={item.title}
                   style={{ width: '100%', maxHeight: 400 }}
-                  fallback="/placeholder.png"
+                  fallback={'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBix5s6CwAAAAASUVORK5CYII='}
                 />
               ) : (
                 <div style={{ 
