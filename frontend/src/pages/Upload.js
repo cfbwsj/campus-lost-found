@@ -164,18 +164,22 @@ const UploadPage = () => {
       
       message.success('发布成功！');
       
-      // 延迟跳转，让用户看到成功消息
-      setTimeout(() => {
-        window.location.href = itemType === 'lost' ? '/lost' : '/found';
-      }, 1500);
+      // 重置表单
       form.resetFields();
       setUploadedFiles([]);
       setOcrResult(null);
       setAiClassification(null);
+      
+      // 延迟跳转，让用户看到成功消息
+      setTimeout(() => {
+        const redirectPath = itemType === 'lost' ? '/lost' : '/found';
+        window.location.href = redirectPath;
+      }, 1500);
 
     } catch (error) {
       console.error('提交失败:', error);
-      message.error('提交失败');
+      message.error(`提交失败: ${error.message || '未知错误'}`);
+      // 失败时不跳转，留在当前页面
     } finally {
       setLoading(false);
     }
