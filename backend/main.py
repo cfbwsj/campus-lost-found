@@ -45,13 +45,18 @@ app = FastAPI(
 # 禁用自动斜杠重定向，避免307导致的CORS问题
 app.router.redirect_slashes = False
 
-# Configure CORS - 允许所有来源
+# Configure CORS - 支持本地和Render部署
+cors_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+# Render部署时允许所有.onrender.com域名（通过环境变量判断）
+if os.getenv("RENDER") or os.getenv("RENDER_EXTERNAL_URL"):
+    cors_origins.append("*")  # Render部署时允许所有来源
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000"
-    ],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
