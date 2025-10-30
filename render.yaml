@@ -2,7 +2,7 @@ services:
   - type: web
     name: campus-backend
     env: docker
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: ./backend/Dockerfile.render
     dockerContext: ./backend
     plan: free
     envVars:
