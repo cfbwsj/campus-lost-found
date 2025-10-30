@@ -1,10 +1,16 @@
 {
   "short_name": "失物招领",
   "name": "校园失物招领系统",
-  "icons": [],
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#1890ff",
   "background_color": "#ffffff"
 }
 
