@@ -1,5 +1,5 @@
 # Build stage
-FROM node:16-alpine as build
+FROM node:18-alpine as build
 
 # Set working directory
 WORKDIR /app
@@ -11,7 +11,7 @@ RUN npm config set registry https://registry.npmmirror.com
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm install
 
 # Copy source code
 COPY . .

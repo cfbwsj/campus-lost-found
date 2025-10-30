@@ -15,8 +15,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy requirements file
 COPY requirements.txt .
 
-# Install Python dependencies using Tsinghua mirror
-RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+# Install Python dependencies (allow hash mismatch for mirror compatibility)
+RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn || \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY . .
