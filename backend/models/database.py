@@ -2,7 +2,8 @@
 数据库配置和连接管理
 """
 
-from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, Boolean, Float
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, Boolean, Float, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -42,6 +43,8 @@ class LostItem(Base):
     created_at = Column(DateTime, default=datetime.utcnow, comment="创建时间")
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="更新时间")
     is_active = Column(Boolean, default=True, comment="是否有效")
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True, comment="发布者用户ID")
+    owner = relationship("User", back_populates="lost_items")
 
 
 class FoundItem(Base):
@@ -62,6 +65,23 @@ class FoundItem(Base):
     created_at = Column(DateTime, default=datetime.utcnow, comment="创建时间")
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="更新时间")
     is_active = Column(Boolean, default=True, comment="是否有效")
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True, comment="发布者用户ID")
+    owner = relationship("User", back_populates="found_items")
+
+
+class User(Base):
+    """用户模型"""
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(100), unique=True, nullable=False, index=True)
+    password_hash = Column(String(255), nullable=False)
+    role = Column(String(20), default="user")  # user/admin
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    lost_items = relationship("LostItem", back_populates="owner")
+    found_items = relationship("FoundItem", back_populates="owner")
 
 
 def get_db():
@@ -76,3 +96,33 @@ def get_db():
 def init_db():
     """初始化数据库"""
     Base.metadata.create_all(bind=engine)
+    # 轻量迁移：为已有表补充 owner_id 字段
+    from sqlalchemy import text
+    with engine.begin() as conn:
+        try:
+            conn.execute(text("ALTER TABLE lost_items ADD COLUMN IF NOT EXISTS owner_id INTEGER"))
+        except Exception:
+            pass
+
+    # 初始化默认管理员账户（仅本地开发使用）
+    try:
+        from sqlalchemy.orm import Session
+        import hashlib
+        db: Session = SessionLocal()
+        admin = db.query(User).filter(User.username == "admin").first()
+        if not admin:
+            admin = User(
+                username="admin",
+                password_hash=hashlib.sha256("123456".encode("utf-8")).hexdigest(),
+                role="admin",
+                is_active=True,
+                created_at=datetime.utcnow()
+            )
+            db.add(admin)
+            db.commit()
+    except Exception:
+        pass
+        try:
+            conn.execute(text("ALTER TABLE found_items ADD COLUMN IF NOT EXISTS owner_id INTEGER"))
+        except Exception:
+            pass

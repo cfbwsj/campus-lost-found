@@ -10,7 +10,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 import os
 
-from api.routes import items, search, upload, ocr, classify
+from api.routes import items, search, upload, ocr, classify, auth
 from models.database import init_db
 
 
@@ -42,13 +42,19 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# 禁用自动斜杠重定向，避免307导致的CORS问题
+app.router.redirect_slashes = False
+
 # Configure CORS - 允许所有来源
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 允许所有域名访问
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 # Static file service
@@ -60,6 +66,7 @@ app.include_router(search.router, prefix="/api/search", tags=["Search Functions"
 app.include_router(upload.router, prefix="/api/upload", tags=["File Upload"])
 app.include_router(ocr.router, prefix="/api/ocr", tags=["OCR Recognition"])
 app.include_router(classify.router, prefix="/api/classify", tags=["AI Classification"])
+app.include_router(auth.router)
 
 
 @app.get("/")

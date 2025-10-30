@@ -17,8 +17,12 @@ class ItemBase(BaseModel):
 
 
 class ItemCreate(ItemBase):
-    """创建失物模型"""
-    pass
+    """创建物品模型（同时用于失物与招领）"""
+    image_url: Optional[str] = None
+    ocr_text: Optional[str] = None
+    ai_category: Optional[str] = None
+    confidence: Optional[float] = None
+    status: Optional[str] = None
 
 
 class ItemUpdate(BaseModel):
@@ -78,6 +82,7 @@ class ItemResponse(BaseModel):
     status: str
     created_at: datetime
     updated_at: datetime
+    owner_id: Optional[int] = None
 
     class Config:
         from_attributes = True
@@ -92,9 +97,30 @@ class SearchRequest(BaseModel):
     offset: int = 0
 
 
+class SearchItem(BaseModel):
+    """搜索结果项（包含来源类型）"""
+    id: int
+    title: str
+    description: Optional[str] = None
+    category: Optional[str] = None
+    location: Optional[str] = None
+    contact_info: Optional[str] = None
+    image_url: Optional[str] = None
+    ocr_text: Optional[str] = None
+    ai_category: Optional[str] = None
+    confidence: Optional[float] = None
+    status: str
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    item_type: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
 class SearchResponse(BaseModel):
     """搜索响应模型"""
-    items: List[ItemResponse]
+    items: List[SearchItem]
     total: int
     page: int
     size: int

@@ -1,33 +1,21 @@
-# Web框架
+# 完整功能依赖（无hash检查）
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
-
-# 数据库
 sqlalchemy==2.0.23
 pymysql==1.1.0
 psycopg2-binary==2.9.9
 alembic==1.12.1
-
-# 搜索引擎
 elasticsearch==8.11.0
-
-# OCR和图像处理
 pytesseract==0.3.10
 opencv-python==4.8.1.78
 Pillow==10.1.0
-
-# AI模型
 torch==2.1.1
 torchvision==0.16.1
 transformers==4.35.2
-
-# 工具库
 pydantic==2.5.0
 python-dotenv==1.0.0
 requests==2.31.0
 numpy==1.24.4
-PyJWT==2.8.0
-
-# 开发工具
 pytest==7.4.3
+

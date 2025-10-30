@@ -12,7 +12,11 @@ const api = axios.create({
 // 请求拦截器
 api.interceptors.request.use(
   (config) => {
-    // 可以在这里添加token等认证信息
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -122,6 +126,21 @@ export const uploadAPI = {
   
   // 获取上传信息
   getUploadInfo: () => api.get('/api/upload/info'),
+};
+
+// 认证API
+export const authAPI = {
+  login: (username, password) => {
+    const params = new URLSearchParams();
+    params.append('username', username);
+    params.append('password', password);
+    return api.post('/api/auth/login', params, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+  },
+  register: (username, password, role = 'user') =>
+    api.post('/api/auth/register', { username, password, role }),
+  me: () => api.get('/api/auth/me'),
 };
 
 // OCR API

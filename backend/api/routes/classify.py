@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, UploadFile, File
 from utils.ai_classifier import item_classifier
 from models.schemas import ClassificationResponse
 
-router = APIRouter()
+router = APIRouter(redirect_slashes=False)
 
 
 @router.post("/", response_model=ClassificationResponse)
@@ -47,6 +47,12 @@ async def classify_image(file: UploadFile = File(...)):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI分类失败: {str(e)}")
+
+
+# 兼容无斜杠路径
+@router.post("")
+async def classify_image_no_slash(file: UploadFile = File(...)):
+    return await classify_image(file)
 
 
 @router.post("/url", response_model=ClassificationResponse)

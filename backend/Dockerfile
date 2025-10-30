@@ -4,20 +4,22 @@ FROM python:3.9-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies (skip mirror replacement for faster build)
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tesseract-ocr \
     tesseract-ocr-chi-sim \
-    libgl1-mesa-dri \
+    libgl1 \
     libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements file
 COPY requirements.txt .
 
-# Install Python dependencies (allow hash mismatch for mirror compatibility)
-RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn || \
-    pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies from official PyPI
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY . .

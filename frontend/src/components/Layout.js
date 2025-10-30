@@ -9,6 +9,7 @@ import {
   MenuOutlined
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { UserOutlined, LogoutOutlined, LoginOutlined } from '@ant-design/icons';
 
 const { Header, Content, Sider } = AntLayout;
 
@@ -23,6 +24,11 @@ const Layout = ({ children }) => {
       key: '/',
       icon: <HomeOutlined />,
       label: '首页',
+    },
+    {
+      key: '/myposts',
+      icon: <UserOutlined />,
+      label: '我的发布',
     },
     {
       key: '/lost',
@@ -52,6 +58,7 @@ const Layout = ({ children }) => {
   };
 
   const isMobile = window.innerWidth <= 768;
+  const token = localStorage.getItem('access_token');
 
   return (
     <AntLayout style={{ minHeight: '100vh' }}>
@@ -80,8 +87,17 @@ const Layout = ({ children }) => {
             onClick={() => setMobileMenuVisible(true)}
           />
         ) : (
-          <div style={{ color: '#666' }}>
-            基于AI技术的智能失物招领平台
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ color: '#666' }}>基于AI技术的智能失物招领平台</div>
+            {token ? (
+              <Button icon={<LogoutOutlined />} onClick={() => { localStorage.removeItem('access_token'); navigate('/'); window.location.reload(); }}>
+                退出
+              </Button>
+            ) : (
+              <Button icon={<LoginOutlined />} onClick={() => navigate('/login')}>
+                登录
+              </Button>
+            )}
           </div>
         )}
       </Header>

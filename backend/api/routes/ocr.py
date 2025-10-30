@@ -9,7 +9,7 @@ import shutil
 from utils.ocr import ocr_processor
 from models.schemas import OCRResponse
 
-router = APIRouter()
+router = APIRouter(redirect_slashes=False)
 
 
 @router.post("/", response_model=OCRResponse)
@@ -47,6 +47,15 @@ async def extract_text_from_image(
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OCR识别失败: {str(e)}")
+
+
+# 兼容无斜杠路径，避免浏览器重定向导致的CORS丢失
+@router.post("")
+async def extract_text_from_image_no_slash(
+    file: UploadFile = File(...),
+    language: str = Form("chi_sim+eng")
+):
+    return await extract_text_from_image(file=file, language=language)
 
 
 @router.post("/url", response_model=OCRResponse)

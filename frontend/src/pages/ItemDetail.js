@@ -25,7 +25,7 @@ import {
   DeleteOutlined
 } from '@ant-design/icons';
 import { useParams, useNavigate } from 'react-router-dom';
-import { lostItemsAPI, foundItemsAPI } from '../services/api';
+import { lostItemsAPI, foundItemsAPI, authAPI } from '../services/api';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -35,10 +35,24 @@ const ItemDetail = () => {
   const [loading, setLoading] = useState(false);
   const [item, setItem] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [me, setMe] = useState(null);
 
   useEffect(() => {
     loadItemDetail();
   }, [type, id]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = localStorage.getItem('access_token');
+        if (!token) return;
+        const res = await authAPI.me();
+        setMe(res);
+      } catch (e) {
+        // ignore
+      }
+    })();
+  }, []);
 
   const loadItemDetail = async () => {
     setLoading(true);
@@ -120,6 +134,7 @@ const ItemDetail = () => {
           </Col>
           <Col>
             <Space>
+              {me && (me.role === 'admin' || me.id === item.owner_id) && (<>
               <Button 
                 icon={<EditOutlined />}
                 onClick={() => navigate(`/edit/${type}/${id}`)}
@@ -133,6 +148,7 @@ const ItemDetail = () => {
               >
                 删除
               </Button>
+              </>)}
             </Space>
           </Col>
         </Row>

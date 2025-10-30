@@ -131,6 +131,12 @@ const UploadPage = () => {
   };
 
   const handleSubmit = async (values) => {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      message.warning('请先登录');
+      window.location.href = '/login';
+      return;
+    }
     if (uploadedFiles.length === 0) {
       message.error('请至少上传一张图片');
       return;
@@ -148,10 +154,12 @@ const UploadPage = () => {
 
       // 根据表单类型调用对应的API
       const apiEndpoint = itemType === 'lost' ? '/api/items/lost' : '/api/items/found';
+      
       const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}${apiEndpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(submitData),
       });

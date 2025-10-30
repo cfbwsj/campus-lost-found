@@ -10,7 +10,8 @@ import uuid
 from datetime import datetime
 from models.schemas import UploadResponse
 
-router = APIRouter()
+# 关闭该子路由自动斜杠重定向，避免 /api/upload → /api/upload/ 产生307导致CORS丢失
+router = APIRouter(redirect_slashes=False)
 
 # 允许的文件类型
 ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'}
@@ -21,8 +22,13 @@ MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 async def upload_file(file: UploadFile = File(...)):
     """上传单个文件"""
     
+    # 读取文件内容以获取大小（UploadFile无 size 属性）
+    contents = await file.read()
+    size_bytes = len(contents)
+    # 重置指针以便后续写入使用（非必须，但更安全）
+    file.file.seek(0)
     # 验证文件大小
-    if file.size > MAX_FILE_SIZE:
+    if size_bytes > MAX_FILE_SIZE:
         raise HTTPException(status_code=413, detail="文件大小不能超过10MB")
     
     # 验证文件类型
@@ -43,22 +49,27 @@ async def upload_file(file: UploadFile = File(...)):
         file_path = os.path.join(upload_dir, unique_filename)
         
         with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+            buffer.write(contents)
         
         # 生成访问URL（使用完整URL以支持跨域访问）
-        import os
-        base_url = os.getenv("BASE_URL", "https://campus-backend-y49m.onrender.com")
+        base_url = os.getenv("BASE_URL", "http://localhost:8000")
         file_url = f"{base_url}/uploads/images/{date_dir}/{unique_filename}"
         
         return UploadResponse(
             filename=unique_filename,
             url=file_url,
-            size=file.size,
+            size=size_bytes,
             content_type=file.content_type
         )
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"文件上传失败: {str(e)}")
+
+
+# 兼容无斜杠路径，避免浏览器重定向导致的CORS丢失
+@router.post("")
+async def upload_file_no_slash(file: UploadFile = File(...)):
+    return await upload_file(file)
 
 
 @router.post("/multiple", response_model=List[UploadResponse])
@@ -72,8 +83,12 @@ async def upload_multiple_files(files: List[UploadFile] = File(...)):
     
     for file in files:
         try:
+            # 读取文件以获取大小
+            contents = await file.read()
+            size_bytes = len(contents)
+            file.file.seek(0)
             # 验证文件大小
-            if file.size > MAX_FILE_SIZE:
+            if size_bytes > MAX_FILE_SIZE:
                 results.append({
                     "error": f"文件 {file.filename} 大小超过限制",
                     "filename": file.filename
@@ -101,16 +116,16 @@ async def upload_multiple_files(files: List[UploadFile] = File(...)):
             file_path = os.path.join(upload_dir, unique_filename)
             
             with open(file_path, "wb") as buffer:
-                shutil.copyfileobj(file.file, buffer)
+                buffer.write(contents)
             
             # 生成访问URL（使用完整URL）
-            base_url = os.getenv("BASE_URL", "https://campus-backend-y49m.onrender.com")
+            base_url = os.getenv("BASE_URL", "http://localhost:8000")
             file_url = f"{base_url}/uploads/images/{date_dir}/{unique_filename}"
             
             results.append(UploadResponse(
                 filename=unique_filename,
                 url=file_url,
-                size=file.size,
+                size=size_bytes,
                 content_type=file.content_type
             ))
             

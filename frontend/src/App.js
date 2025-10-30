@@ -13,6 +13,10 @@ import FoundItems from './pages/FoundItems';
 import Search from './pages/Search';
 import Upload from './pages/Upload';
 import ItemDetail from './pages/ItemDetail';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import MyPosts from './pages/MyPosts';
+import EditItem from './pages/EditItem';
 
 // 设置dayjs中文
 dayjs.locale('zh-cn');
@@ -29,6 +33,10 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/item/:type/:id" element={<ItemDetail />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/myposts" element={<MyPosts />} />
+            <Route path="/edit/:type/:id" element={<EditItem />} />
           </Routes>
         </Layout>
       </Router>
