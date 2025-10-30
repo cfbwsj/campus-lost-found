@@ -3,7 +3,7 @@ services:
     image: postgres:13-alpine
     container_name: campus-postgres
     environment:
-      POSTGRES_DB: campus_lost_found
+      POSTGRES_DB: campus_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     volumes:
@@ -39,12 +39,13 @@ services:
     build: ./backend
     container_name: campus-backend
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/campus_lost_found
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/campus_db
       - ELASTICSEARCH_HOST=elasticsearch
       - ELASTICSEARCH_PORT=9200
       - REDIS_URL=redis://redis:6379
+      - BASE_URL=http://localhost:8000
     volumes:
-      - D:\AIweb\campus-lost-found\backend\uploads:/app/uploads
+      - ./backend/uploads:/app/uploads
     ports:
       - "8000:8000"
     depends_on:

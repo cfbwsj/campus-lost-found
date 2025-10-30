@@ -8,8 +8,8 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import os
 
-# 数据库配置 - 支持PostgreSQL和MySQL
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:password@localhost:5432/campus_db")
+# 数据库配置 - Docker环境使用PostgreSQL
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:password@postgres:5432/campus_db")
 # 如果URL以postgres://开头，替换为postgresql://（Render兼容性）
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)

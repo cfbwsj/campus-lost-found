@@ -17,7 +17,7 @@ from models.database import init_db
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifecycle management"""
-    # Create upload directories first
+    # Create upload directories
     os.makedirs("uploads", exist_ok=True)
     os.makedirs("uploads/images", exist_ok=True)
     os.makedirs("uploads/ocr", exist_ok=True)
