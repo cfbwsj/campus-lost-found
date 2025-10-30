@@ -45,12 +45,7 @@ app = FastAPI(
 # Configure CORS - 允许所有来源（生产环境应该指定具体域名）
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000", 
-        "http://127.0.0.1:3000",
-        "https://campus-frontend-fk0e.onrender.com",  # 您的前端域名
-        "https://*.onrender.com",  # 允许所有Render域名
-    ],
+    allow_origins=["*"],  # 允许所有域名访问
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -94,3 +89,4 @@ if __name__ == "__main__":
         reload=True,
         log_level="info"
     )
+
