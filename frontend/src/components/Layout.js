@@ -70,7 +70,7 @@ const Layout = ({ children }) => {
           fontWeight: 'bold',
           color: '#1890ff'
         }}>
-          ? 校园失物招领
+          校园失物招领
         </div>
         
         {isMobile ? (
@@ -130,3 +130,4 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+
