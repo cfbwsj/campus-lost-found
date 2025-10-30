@@ -145,10 +145,28 @@ const UploadPage = () => {
         confidence: aiClassification?.confidence || 0
       };
 
-      // 这里根据表单类型决定调用哪个API
-      // const result = await lostItemsAPI.createLostItem(submitData);
+      // 根据表单类型调用对应的API
+      const apiEndpoint = itemType === 'lost' ? '/api/items/lost' : '/api/items/found';
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}${apiEndpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submitData),
+      });
+
+      if (!response.ok) {
+        throw new Error('提交失败');
+      }
+
+      const result = await response.json();
       
       message.success('发布成功！');
+      
+      // 延迟跳转，让用户看到成功消息
+      setTimeout(() => {
+        window.location.href = itemType === 'lost' ? '/lost' : '/found';
+      }, 1500);
       form.resetFields();
       setUploadedFiles([]);
       setOcrResult(null);

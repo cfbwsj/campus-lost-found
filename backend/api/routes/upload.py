@@ -45,8 +45,10 @@ async def upload_file(file: UploadFile = File(...)):
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        # 生成访问URL
-        file_url = f"/uploads/images/{date_dir}/{unique_filename}"
+        # 生成访问URL（使用完整URL以支持跨域访问）
+        import os
+        base_url = os.getenv("BASE_URL", "https://campus-backend-ebe1.onrender.com")
+        file_url = f"{base_url}/uploads/images/{date_dir}/{unique_filename}"
         
         return UploadResponse(
             filename=unique_filename,
@@ -101,8 +103,9 @@ async def upload_multiple_files(files: List[UploadFile] = File(...)):
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(file.file, buffer)
             
-            # 生成访问URL
-            file_url = f"/uploads/images/{date_dir}/{unique_filename}"
+            # 生成访问URL（使用完整URL）
+            base_url = os.getenv("BASE_URL", "https://campus-backend-ebe1.onrender.com")
+            file_url = f"{base_url}/uploads/images/{date_dir}/{unique_filename}"
             
             results.append(UploadResponse(
                 filename=unique_filename,
