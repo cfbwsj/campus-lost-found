@@ -31,7 +31,7 @@ async def create_found_item(item: ItemCreate, db: Session = Depends(get_db)):
     return db_item
 
 
-@router.get("/lost", response_model=List[ItemResponse])
+@router.get("/lost")
 async def get_lost_items(
     skip: int = Query(0, ge=0),
     limit: int = Query(20, ge=1, le=100),
@@ -47,11 +47,18 @@ async def get_lost_items(
     if status:
         query = query.filter(DBLostItem.status == status)
     
+    total = query.count()
     items = query.offset(skip).limit(limit).all()
-    return items
+    
+    return {
+        "items": items,
+        "total": total,
+        "skip": skip,
+        "limit": limit
+    }
 
 
-@router.get("/found", response_model=List[ItemResponse])
+@router.get("/found")
 async def get_found_items(
     skip: int = Query(0, ge=0),
     limit: int = Query(20, ge=1, le=100),
@@ -67,8 +74,15 @@ async def get_found_items(
     if status:
         query = query.filter(DBFoundItem.status == status)
     
+    total = query.count()
     items = query.offset(skip).limit(limit).all()
-    return items
+    
+    return {
+        "items": items,
+        "total": total,
+        "skip": skip,
+        "limit": limit
+    }
 
 
 @router.get("/lost/{item_id}", response_model=ItemResponse)

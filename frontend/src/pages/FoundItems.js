@@ -58,8 +58,8 @@ const FoundItems = () => {
       };
 
       const result = await foundItemsAPI.getFoundItems(params);
-      setFoundItems(result || []);
-      setTotal(result?.length || 0);
+      setFoundItems(result?.items || []);
+      setTotal(result?.total || 0);
 
     } catch (error) {
       console.error('加载招领列表失败:', error);

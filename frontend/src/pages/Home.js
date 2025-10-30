@@ -53,8 +53,8 @@ const Home = () => {
         foundItemsAPI.getFoundItems({ limit: 5 })
       ]);
 
-      const recentLost = (lostRes || []).map(item => ({ ...item, type: 'lost' }));
-      const recentFound = (foundRes || []).map(item => ({ ...item, type: 'found' }));
+      const recentLost = (lostRes?.items || []).map(item => ({ ...item, type: 'lost' }));
+      const recentFound = (foundRes?.items || []).map(item => ({ ...item, type: 'found' }));
       
       const allRecent = [...recentLost, ...recentFound]
         .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
@@ -62,11 +62,11 @@ const Home = () => {
 
       setRecentItems(allRecent);
 
-      // 模拟统计数据
+      // 从API获取真实统计数据
       setStats({
-        lostCount: 156,
-        foundCount: 89,
-        totalCount: 245
+        lostCount: lostRes?.total || 0,
+        foundCount: foundRes?.total || 0,
+        totalCount: (lostRes?.total || 0) + (foundRes?.total || 0)
       });
 
     } catch (error) {

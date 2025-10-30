@@ -60,8 +60,8 @@ const LostItems = () => {
       };
 
       const result = await lostItemsAPI.getLostItems(params);
-      setLostItems(result || []);
-      setTotal(result?.length || 0);
+      setLostItems(result?.items || []);
+      setTotal(result?.total || 0);
 
     } catch (error) {
       console.error('加载失物列表失败:', error);
