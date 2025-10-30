@@ -36,6 +36,7 @@ const UploadPage = () => {
   const [ocrResult, setOcrResult] = useState(null);
   const [aiClassification, setAiClassification] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [itemType, setItemType] = useState('lost'); // 'lost' 或 'found'
 
   const categories = [
     '手机/数码产品',
@@ -199,6 +200,17 @@ const UploadPage = () => {
                 layout="vertical"
                 onFinish={handleSubmit}
               >
+                <Form.Item
+                  label="发布类型"
+                  name="publish_type"
+                  initialValue="lost"
+                >
+                  <Select onChange={(value) => setItemType(value)}>
+                    <Option value="lost">我丢失了物品（发布失物信息）</Option>
+                    <Option value="found">我捡到了物品（发布招领信息）</Option>
+                  </Select>
+                </Form.Item>
+
                 <Form.Item
                   name="type"
                   label="信息类型"
